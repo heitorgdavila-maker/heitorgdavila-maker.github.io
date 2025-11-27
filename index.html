@@ -1,0 +1,4690 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#020617">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon-192.png">
+
+  <title>TechMuscleGod – Single File</title>
+  <style>
+    /* Import custom fonts for Undertale / Tales theme */
+    @font-face {
+      font-family: '8bitoperator';
+      src: url('8bitoperator_jve.woff') format('woff'),
+           url('8bitoperator_jve.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: '8bitoperator-bold';
+      src: url('8bitoperatorplus-bold.woff') format('woff');
+      font-weight: bold;
+      font-style: normal;
+    }
+    :root{
+      --bg:#0b0b0b; --fg:#eaeaea; --muted:#b6b6b6; --card:#141414; --border:#262626;
+      --accent:#4cc9f0; --danger:#ff6b6b; --ok:#51cf66; --timerTrack:#262626; --timerFill:#4cc9f0;
+      --radius:16px;
+      --body:14px; --h:18px; --cardPad:14px;
+      --colL:1fr; --colR:1fr;
+      --font-ui: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      --font-head: Poppins, var(--font-ui);
+      --font-num: "Space Grotesk", var(--font-ui);
+      --cardA: var(--card);
+      --cardB: var(--card);
+      --cardC: var(--card);
+      --accent1: var(--accent);
+      --accent2: var(--accent);
+      --accent3: var(--accent);
+      --accent4: var(--accent);
+      --accentLo: var(--accent);
+      --accentHi: var(--accent);
+      --alt: #666666;
+    }
+    /* 20 themes */
+    .theme-blood{ --bg:#000; --fg:#fff; --muted:#d0d0d0; --card:#0a0a0a; --border:#222; --accent:#ff2020; --timerFill:#ff2020; }
+    .theme-ocean{ --bg:#04141e; --fg:#e8fbff; --card:#0a1f2a; --border:#123245; --accent:#43d9e6; --timerFill:#43d9e6; }
+    .theme-forest{ --bg:#0d1a12; --fg:#e6f5ea; --card:#112419; --border:#1a3a28; --accent:#4ade80; --timerFill:#4ade80; }
+    .theme-amber{ --bg:#181107; --fg:#fff7e6; --card:#22160a; --border:#2e1e0d; --accent:#fbbf24; --timerFill:#fbbf24; }
+    .theme-royal{ --bg:#0c0c1c; --fg:#eef; --card:#14143a; --border:#1f1f5a; --accent:#7c8cff; --timerFill:#7c8cff; }
+    .theme-grape{ --bg:#140a1a; --fg:#f3eaff; --card:#1c0e24; --border:#2a1536; --accent:#a78bfa; --timerFill:#a78bfa; }
+    .theme-rose{ --bg:#19090f; --fg:#ffeaf1; --card:#230c14; --border:#36121f; --accent:#fb7185; --timerFill:#fb7185; }
+    .theme-sunset{ --bg:#1a0e06; --fg:#ffeedd; --card:#24140b; --border:#3a1f12; --accent:#ff8b3d; --timerFill:#ff8b3d; }
+    .theme-cyber{ --bg:#06060a; --fg:#eaeaff; --card:#0f0f1c; --border:#18182a; --accent:#00e5ff; --timerFill:#00e5ff; }
+    .theme-mint{ --bg:#061410; --fg:#eafff8; --card:#0a1f19; --border:#103329; --accent:#34d399; --timerFill:#34d399; }
+    .theme-gold{ --bg:#141006; --fg:#fff9e6; --card:#1f1a0a; --border:#2e2811; --accent:#ffd166; --timerFill:#ffd166; }
+    .theme-steel{ --bg:#0d0f12; --fg:#e8edf3; --card:#15181c; --border:#222831; --accent:#7dd3fc; --timerFill:#7dd3fc; }
+    .theme-coral{ --bg:#140e0d; --fg:#ffecea; --card:#1f1614; --border:#2e211f; --accent:#ff7f7f; --timerFill:#ff7f7f; }
+    .theme-neon{ --bg:#000; --fg:#f7f7ff; --card:#0a0a0f; --border:#1a1a2f; --accent:#39ff14; --timerFill:#39ff14; }
+    .theme-plum{ --bg:#110811; --fg:#ffecff; --card:#190d19; --border:#2a152a; --accent:#d884f7; --timerFill:#d884f7; }
+    .theme-ice{ --bg:#0a1114; --fg:#e9faff; --card:#0f1a1f; --border:#1b2a33; --accent:#9ae6ff; --timerFill:#9ae6ff; }
+    .theme-slate{ --bg:#0b0c10; --fg:#e5e7eb; --card:#111318; --border:#1f232b; --accent:#94a3b8; --timerFill:#94a3b8; }
+    .theme-lime{ --bg:#0d1406; --fg:#f2ffe6; --card:#12200a; --border:#1a2f0f; --accent:#b3ff2e; --timerFill:#b3ff2e; }
+    .theme-fire{ --bg:#130707; --fg:#ffeeee; --card:#1c0a0a; --border:#2a1010; --accent:#ff4141; --timerFill:#ff4141; }
+    .theme-azure{ --bg:#061018; --fg:#e8f6ff; --card:#0a1b2a; --border:#0f2c45; --accent:#66b3ff; --timerFill:#66b3ff; }
+
+    .theme-hitHard{
+      --bg:#050509;
+      --fg:#f5f5f7;
+      --muted:#9ea2aa;
+      --card:#14161f;
+      --cardA:#14161f;
+      --cardB:#17120f;
+      --cardC:#101116;
+      --border:#2b2f3a;
+      --accent:#ff3b30;
+      --accent1:#ff3b30;
+      --accent2:#ffd60a;
+      --accent3:#0a84ff;
+      --accent4:#ffffff;
+      --accentLo:#ff3b30;
+      --accentHi:#ffd60a;
+      --timerFill:#ff3b30;
+      --alt:#5f6368;
+    }
+    .theme-zWarrior{
+      --bg:#050716;
+      --fg:#f8f9ff;
+      --muted:#a5b4fc;
+      --card:#0b1020;
+      --cardA:#0b1020;
+      --cardB:#071923;
+      --cardC:#0a0f1a;
+      --border:#1f2937;
+      --accent:#3b82f6;
+      --accent1:#3b82f6;
+      --accent2:#22d3ee;
+      --accent3:#facc15;
+      --accent4:#ffffff;
+      --accentLo:#3b82f6;
+      --accentHi:#22d3ee;
+      --timerFill:#3b82f6;
+      --alt:#f97316;
+    }
+    .theme-ultraInstinct{
+      --bg:#020410;
+      --fg:#f9fafb;
+      --muted:#c7d2fe;
+      --card:#070a20;
+      --cardA:#070a20;
+      --cardB:#080b24;
+      --cardC:#090c26;
+      --border:#111827;
+      --accent:#e5e7eb;
+      --accent1:#e5e7eb;
+      --accent2:#60a5fa;
+      --accent3:#a855f7;
+      --accent4:#ffffff;
+      --accentLo:#60a5fa;
+      --accentHi:#a855f7;
+      --timerFill:#e5e7eb;
+      --alt:#22d3ee;
+    }
+
+    .theme-itsMe{
+      /* It's a Me (Mario-inspired) – Super Mario logo palette */
+      --bg:#000000;          /* black outline background */
+      --fg:#fefcf5;
+      --muted:#ffe08a;
+
+      /* Cards use the four logo colours */
+      --card:#0095da;        /* blue */
+      --cardA:#e52521;       /* red */
+      --cardB:#43b047;       /* green */
+      --cardC:#fbd000;       /* yellow */
+
+      --border:#000000;
+
+      /* Buttons use the same logo colours */
+      --accent:#e52521;      /* primary accent (red) */
+      --accent1:#e52521;     /* main button background */
+      --accent2:#fbd000;     /* secondary (yellow) */
+      --accent3:#0095da;     /* alt (blue) */
+      --accent4:#43b047;     /* alt (green) */
+
+      --accentLo:#e52521;
+      --accentHi:#fbd000;
+      --timerFill:#0095da;
+      --alt:#43b047;
+    }
+    .theme-bigBoss{
+      --bg:#020409;
+      --fg:#e5e7eb;
+      --muted:#9ca3af;
+      --card:#101827;
+      --cardA:#101827;
+      --cardB:#111827;
+      --cardC:#0f172a;
+      --border:#1f2937;
+      --accent:#22c55e;
+      --accent1:#22c55e;
+      --accent2:#f97316;
+      --accent3:#e5e7eb;
+      --accent4:#6b7280;
+      --accentLo:#16a34a;
+      --accentHi:#f97316;
+      --timerFill:#22c55e;
+      --alt:#f59e0b;
+    }
+    .theme-whiteWolf{
+      --bg:#020712;
+      --fg:#e5f0ff;
+      --muted:#9fb4d9;
+      --card:#0b1020;
+      --cardA:#0b1020;
+      --cardB:#111827;
+      --cardC:#050816;
+      --border:#1f2937;
+      --accent:#93c5fd;
+      --accent1:#93c5fd;
+      --accent2:#e5e7eb;
+      --accent3:#f97373;
+      --accent4:#ffffff;
+      --accentLo:#60a5fa;
+      --accentHi:#f97373;
+      --timerFill:#93c5fd;
+      --alt:#f97316;
+    }
+    .theme-sector7{
+      --bg:#050816;
+      --fg:#e5f4f1;
+      --muted:#86efac;
+      --card:#0b1120;
+      --cardA:#0b1120;
+      --cardB:#052e16;
+      --cardC:#1f2937;
+      --border:#064e3b;
+      --accent:#22c55e;
+      --accent1:#22c55e;
+      --accent2:#22d3ee;
+      --accent3:#facc15;
+      --accent4:#f97316;
+      --accentLo:#22c55e;
+      --accentHi:#22d3ee;
+      --timerFill:#22c55e;
+      --alt:#22d3ee;
+    }
+    .theme-gymPop{
+      --bg:#0f172a;
+      --fg:#f9fafb;
+      --muted:#fecaca;
+      --card:#111827;
+      --cardA:#991b1b;
+      --cardB:#0369a1;
+      --cardC:#166534;
+      --border:#1f2937;
+      --accent:#fb7185;
+      --accent1:#fb7185;
+      --accent2:#22c55e;
+      --accent3:#fde047;
+      --accent4:#38bdf8;
+      --accentLo:#fb7185;
+      --accentHi:#22c55e;
+      --timerFill:#fb7185;
+      --alt:#f97316;
+    }
+
+    
+    
+    .theme-terracottaHouse{
+      /* Terracotta + aqua facade inspired palette */
+      --bg:#f6f3f1;          /* soft neutral background */
+      --fg:#111111;          /* near-black text for strong contrast */
+      --muted:#7b7c80;       /* gentle grey for secondary text */
+
+      /* Cards: each different, like Gym Pop */
+      --card:#de7753;        /* top header – warm terracotta */
+      --cardA:#ffc7a3;       /* left workout – peach */
+      --cardB:#dde0e3;       /* right rest – light grey */
+      --cardC:#7fb7b5;       /* progress – aqua/teal mix */
+
+      --border:#e3d8cf;
+
+      --accent:#de7753;
+      --accent1:#de7753;     /* primary buttons – terracotta */
+      --accent2:#5b9290;     /* secondary buttons – deeper teal */
+      --accent3:#7fb7b5;     /* aqua highlight */
+      --accent4:#ffc7a3;     /* peach highlight */
+      --accentLo:#5b9290;
+      --accentHi:#de7753;
+
+      --timerFill:#5b9290;   /* teal timer fill */
+      --timerTrack:#ffffff;
+      --alt:#7fb7b5;
+    }
+
+    /* Terracotta House: ensure readable text and themed UI */
+
+    .theme-terracottaHouse .card.card-workout,
+    .theme-terracottaHouse .card.card-rest,
+    .theme-terracottaHouse .card.card-progress{
+      color:#000000;
+    }
+    .theme-terracottaHouse .card.card-workout *,
+    .theme-terracottaHouse .card.card-rest *,
+    .theme-terracottaHouse .card.card-progress *{
+      color:#000000;
+    }
+
+    .theme-terracottaHouse .name{
+      color:#000000;
+      text-shadow:none;
+      box-shadow:none;
+    }
+    .theme-terracottaHouse .topbar .badge,
+    .theme-terracottaHouse .topbar .badge *{
+      color:#000000;
+    }
+
+    .theme-terracottaHouse .btn{
+      background:var(--accent1);
+      color:#000000;
+    }
+    .theme-terracottaHouse .btn.secondary{
+      background:var(--accent2);
+      color:#ffffff;
+    }
+    .theme-terracottaHouse .btn.ghost{
+      color:var(--accent2);
+      border-color:var(--accent2);
+    }
+
+    .theme-terracottaHouse #menuBtn{
+      background:var(--accent2);
+      color:#ffffff;
+      border-color:var(--accent2);
+    }
+
+    .theme-terracottaHouse #editExercisesBtn{
+      background:var(--cardA);
+      color:#000000;
+    }
+
+    .theme-terracottaHouse input,
+    .theme-terracottaHouse select{
+      background:#ffffff;
+      color:#000000;
+      border-color:#d1c0aa;
+    }
+
+    .theme-terracottaHouse #growthSvgInline{
+      background:#ffffff;
+      border-color:var(--border);
+    }
+    .theme-terracottaHouse #growthSvgInline text{
+      fill:#000000;
+    }
+    .theme-terracottaHouse .timerBar{
+      background:#ffffff;
+    }
+    .theme-terracottaHouse .timerFill,
+    .theme-terracottaHouse #stickyFill{
+      background:var(--accent1);
+    }
+}
+    .theme-cottonCandy{
+      --bg:#020617;
+      --fg:#fdf2ff;
+      --muted:#e5b3ff;
+      --card:#0b1120;
+      --cardA:#1d1b3a;
+      --cardB:#1b2345;
+      --cardC:#171a3b;
+      --border:#312e81;
+      --accent:#f9a8d4;
+      --accent1:#f9a8d4;
+      --accent2:#bfdbfe;
+      --accent3:#c4b5fd;
+      --accent4:#ffffff;
+      --accentLo:#f9a8d4;
+      --accentHi:#bfdbfe;
+      --timerFill:#f9a8d4;
+      --alt:#c4b5fd;
+    }
+    .theme-pastelUprising{
+      --bg:#0b1020;
+      --fg:#fefce8;
+      --muted:#fcd34d;
+      --card:#1e293b;
+      --cardA:#1f2937;
+      --cardB:#164e63;
+      --cardC:#1f2937;
+      --border:#334155;
+      --accent:#f97316;
+      --accent1:#fdba74;
+      --accent2:#4ade80;
+      --accent3:#38bdf8;
+      --accent4:#f9a8d4;
+      --accentLo:#fdba74;
+      --accentHi:#38bdf8;
+      --timerFill:#fdba74;
+      --alt:#4ade80;
+    }
+    .theme-minimalGraphite{
+      --bg:#020617;
+      --fg:#e5e7eb;
+      --muted:#9ca3af;
+      --card:#020617;
+      --cardA:#020617;
+      --cardB:#020617;
+      --cardC:#020617;
+      --border:#111827;
+      --accent:#22d3ee;
+      --accent1:#22d3ee;
+      --accent2:#22d3ee;
+      --accent3:#22d3ee;
+      --accent4:#22d3ee;
+      --accentLo:#22d3ee;
+      --accentHi:#22d3ee;
+      --timerFill:#22d3ee;
+      --alt:#4b5563;
+    }
+    .theme-forestTrail{
+      --bg:#02120a;
+      --fg:#ecfdf5;
+      --muted:#6ee7b7;
+      --card:#022c22;
+      --cardA:#064e3b;
+      --cardB:#022c22;
+      --cardC:#052e16;
+      --border:#064e3b;
+      --accent:#22c55e;
+      --accent1:#22c55e;
+      --accent2:#4ade80;
+      --accent3:#22c55e;
+      --accent4:#a3e635;
+      --accentLo:#22c55e;
+      --accentHi:#4ade80;
+      --timerFill:#22c55e;
+      --alt:#16a34a;
+    }
+
+    .theme-shadowNinja{
+      --bg:#050112;
+      --fg:#e5e7eb;
+      --muted:#c4b5fd;
+      --card:#0b1020;
+      --cardA:#1e1b4b;
+      --cardB:#111827;
+      --cardC:#020617;
+      --border:#1f2937;
+      --accent:#f97316;
+      --accent1:#f97316;
+      --accent2:#6366f1;
+      --accent3:#ec4899;
+      --accent4:#e5e7eb;
+      --accentLo:#f97316;
+      --accentHi:#6366f1;
+      --timerFill:#f97316;
+      --alt:#6366f1;
+    }
+    .theme-nightCity{
+      --bg:#020617;
+      --fg:#f9fafb;
+      --muted:#e5e7eb;
+      --card:#020617;
+      --cardA:#0f172a;
+      --cardB:#0f172a;
+      --cardC:#0f172a;
+      --border:#1e293b;
+      --accent:#ec4899;
+      --accent1:#ec4899;
+      --accent2:#22d3ee;
+      --accent3:#facc15;
+      --accent4:#22c55e;
+      --accentLo:#ec4899;
+      --accentHi:#22d3ee;
+      --timerFill:#ec4899;
+      --alt:#facc15;
+    }
+    .theme-devilTriggered{
+      --bg:#02010a;
+      --fg:#fee2e2;
+      --muted:#fecaca;
+      --card:#111827;
+      --cardA:#7f1d1d;
+      --cardB:#1e293b;
+      --cardC:#111827;
+      --border:#7f1d1d;
+      --accent:#f97373;
+      --accent1:#f97373;
+      --accent2:#60a5fa;
+      --accent3:#a855f7;
+      --accent4:#ffffff;
+      --accentLo:#f97373;
+      --accentHi:#60a5fa;
+      --timerFill:#f97373;
+      --alt:#a855f7;
+    }
+    .theme-bleedingEdge{
+      --bg:#020617;
+      --fg:#e5e7eb;
+      --muted:#9ca3af;
+      --card:#020617;
+      --cardA:#020617;
+      --cardB:#020617;
+      --cardC:#020617;
+      --border:#4b5563;
+      --accent:#f97373;
+      --accent1:#f97373;
+      --accent2:#22d3ee;
+      --accent3:#facc15;
+      --accent4:#22c55e;
+      --accentLo:#f97373;
+      --accentHi:#22d3ee;
+      --timerFill:#f97373;
+      --alt:#f97316;
+    }
+    .theme-heavenlySakura{
+      --bg:#130817;
+      --fg:#fdf2ff;
+      --muted:#f9a8d4;
+      --card:#1f1027;
+      --cardA:#1f1027;
+      --cardB:#1e293b;
+      --cardC:#1e1b4b;
+      --border:#4c1d95;
+      --accent:#f9a8d4;
+      --accent1:#f9a8d4;
+      --accent2:#facc15;
+      --accent3:#a78bfa;
+      --accent4:#ffffff;
+      --accentLo:#f9a8d4;
+      --accentHi:#a78bfa;
+      --timerFill:#f9a8d4;
+      --alt:#fbbf24;
+    }
+    .theme-oceanTempest{
+      --bg:#020617;
+      --fg:#e0f2fe;
+      --muted:#7dd3fc;
+      --card:#0b1120;
+      --cardA:#082f49;
+      --cardB:#0b1120;
+      --cardC:#082f49;
+      --border:#075985;
+      --accent:#38bdf8;
+      --accent1:#38bdf8;
+      --accent2:#22d3ee;
+      --accent3:#a5b4fc;
+      --accent4:#e0f2fe;
+      --accentLo:#38bdf8;
+      --accentHi:#22d3ee;
+      --timerFill:#38bdf8;
+      --alt:#0ea5e9;
+    }
+    .theme-ironChains{
+      --bg:#020617;
+      --fg:#e5e7eb;
+      --muted:#9ca3af;
+      --card:#020617;
+      --cardA:#111827;
+      --cardB:#020617;
+      --cardC:#111827;
+      --border:#4b5563;
+      --accent:#9ca3af;
+      --accent1:#9ca3af;
+      --accent2:#e5e7eb;
+      --accent3:#f97373;
+      --accent4:#facc15;
+      --accentLo:#9ca3af;
+      --accentHi:#e5e7eb;
+      --timerFill:#9ca3af;
+      --alt:#6b7280;
+    }
+    .theme-goldenChampion{
+      --bg:#020617;
+      --fg:#fefce8;
+      --muted:#facc15;
+      --card:#0b1120;
+      --cardA:#0b1120;
+      --cardB:#1f2937;
+      --cardC:#14532d;
+      --border:#facc15;
+      --accent:#facc15;
+      --accent1:#facc15;
+      --accent2:#22c55e;
+      --accent3:#38bdf8;
+      --accent4:#fefce8;
+      --accentLo:#facc15;
+      --accentHi:#22c55e;
+      --timerFill:#facc15;
+      --alt:#22c55e;
+    }
+    .theme-pixelFury{
+      --bg:#020617;
+      --fg:#f9fafb;
+      --muted:#e5e7eb;
+      --card:#020617;
+      --cardA:#0f172a;
+      --cardB:#020617;
+      --cardC:#0f172a;
+      --border:#1f2937;
+      --accent:#22d3ee;
+      --accent1:#22d3ee;
+      --accent2:#ec4899;
+      --accent3:#facc15;
+      --accent4:#a855f7;
+      --accentLo:#22d3ee;
+      --accentHi:#ec4899;
+      --timerFill:#22d3ee;
+      --alt:#facc15;
+    }
+
+    .theme-nineTails{
+      --bg:#100204;
+      --fg:#fef2f2;
+      --muted:#fed7aa;
+      --card:#111827;
+      --cardA:#7f1d1d;
+      --cardB:#7c2d12;
+      --cardC:#111827;
+      --border:#9f1239;
+      --accent:#f97316;
+      --accent1:#f97316;
+      --accent2:#facc15;
+      --accent3:#fb7185;
+      --accent4:#fee2e2;
+      --accentLo:#f97316;
+      --accentHi:#fb7185;
+      --timerFill:#f97316;
+      --alt:#fb7185;
+    }
+    .theme-eldenEclipse{
+      --bg:#020617;
+      --fg:#e5e7eb;
+      --muted:#a3e635;
+      --card:#0b1120;
+      --cardA:#022c22;
+      --cardB:#111827;
+      --cardC:#0b1120;
+      --border:#14532d;
+      --accent:#eab308;
+      --accent1:#eab308;
+      --accent2:#22c55e;
+      --accent3:#38bdf8;
+      --accent4:#e5e7eb;
+      --accentLo:#eab308;
+      --accentHi:#22c55e;
+      --timerFill:#eab308;
+      --alt:#22c55e;
+    }
+    .theme-lastWish{
+      --bg:#020811;
+      --fg:#e5e7eb;
+      --muted:#93c5fd;
+      --card:#020617;
+      --cardA:#020617;
+      --cardB:#020617;
+      --cardC:#020617;
+      --border:#1f2937;
+      --accent:#93c5fd;
+      --accent1:#93c5fd;
+      --accent2:#fde68a;
+      --accent3:#f97373;
+      --accent4:#e5e7eb;
+      --accentLo:#93c5fd;
+      --accentHi:#fde68a;
+      --timerFill:#93c5fd;
+      --alt:#f97373;
+    }
+    .theme-devilsSymphony{
+      --bg:#02010a;
+      --fg:#fee2e2;
+      --muted:#fecaca;
+      --card:#020617;
+      --cardA:#450a0a;
+      --cardB:#0b1120;
+      --cardC:#020617;
+      --border:#7f1d1d;
+      --accent:#f97373;
+      --accent1:#f97373;
+      --accent2:#60a5fa;
+      --accent3:#a855f7;
+      --accent4:#e5e7eb;
+      --accentLo:#f97373;
+      --accentHi:#60a5fa;
+      --timerFill:#f97373;
+      --alt:#a855f7;
+    }
+    .theme-neonOverdrive{
+      --bg:#020617;
+      --fg:#f9fafb;
+      --muted:#e5e7eb;
+      --card:#020617;
+      --cardA:#111827;
+      --cardB:#020617;
+      --cardC:#111827;
+      --border:#1f2937;
+      --accent:#22d3ee;
+      --accent1:#22d3ee;
+      --accent2:#ec4899;
+      --accent3:#facc15;
+      --accent4:#22c55e;
+      --accentLo:#22d3ee;
+      --accentHi:#ec4899;
+      --timerFill:#22d3ee;
+      --alt:#facc15;
+    }
+    .theme-godOfTheRing{
+      --bg:#020617;
+      --fg:#fefce8;
+      --muted:#facc15;
+      --card:#030712;
+      --cardA:#0b1120;
+      --cardB:#1f2937;
+      --cardC:#0b1120;
+      --border:#facc15;
+      --accent:#facc15;
+      --accent1:#facc15;
+      --accent2:#ef4444;
+      --accent3:#22c55e;
+      --accent4:#38bdf8;
+      --accentLo:#facc15;
+      --accentHi:#ef4444;
+      --timerFill:#facc15;
+      --alt:#ef4444;
+    }
+    .theme-bloodMoon{
+      --bg:#02010a;
+      --fg:#fee2e2;
+      --muted:#fecaca;
+      --card:#020617;
+      --cardA:#450a0a;
+      --cardB:#111827;
+      --cardC:#020617;
+      --border:#7f1d1d;
+      --accent:#e11d48;
+      --accent1:#e11d48;
+      --accent2:#f97316;
+      --accent3:#facc15;
+      --accent4:#fecaca;
+      --accentLo:#e11d48;
+      --accentHi:#f97316;
+      --timerFill:#e11d48;
+      --alt:#f97316;
+    }
+    .theme-celestialBlossom{
+      --bg:#020617;
+      --fg:#fdf2ff;
+      --muted:#e9d5ff;
+      --card:#020617;
+      --cardA:#1d124b;
+      --cardB:#312e81;
+      --cardC:#020617;
+      --border:#4c1d95;
+      --accent:#f9a8d4;
+      --accent1:#f9a8d4;
+      --accent2:#a5b4fc;
+      --accent3:#22d3ee;
+      --accent4:#f9fafb;
+      --accentLo:#f9a8d4;
+      --accentHi:#a5b4fc;
+      --timerFill:#f9a8d4;
+      --alt:#a5b4fc;
+    }
+    .theme-divineCircuit{
+      --bg:#020617;
+      --fg:#e5e7eb;
+      --muted:#a5b4fc;
+      --card:#020617;
+      --cardA:#0f172a;
+      --cardB:#020617;
+      --cardC:#0f172a;
+      --border:#1f2937;
+      --accent:#22d3ee;
+      --accent1:#22d3ee;
+      --accent2:#22c55e;
+      --accent3:#facc15;
+      --accent4:#e5e7eb;
+      --accentLo:#22d3ee;
+      --accentHi:#22c55e;
+      --timerFill:#22d3ee;
+      --alt:#facc15;
+    }
+
+    html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font: var(--body)/1.5 var(--font-ui);}
+    *{box-sizing:border-box}
+    .container{max-width:960px;margin:0 auto;padding:12px 12px 96px}
+
+    h1,h2,h3,h4{margin:0 0 6px 0;line-height:1.2;font-family: var(--font-head)}
+    .num{font-family: var(--font-num); font-variant-numeric: tabular-nums}
+    .row{display:flex;gap:8px;align-items:center}
+    #metricInline,
+    #chartRange{
+      max-width:120px;
+      font-size:12px;
+      padding:2px 4px;
+    }
+    #metricSummary,
+    #chartRangeSummary{
+      max-width:120px;
+      font-size:12px;
+      padding:2px 4px;
+    }
+    #metricInline,
+    #chartRange{
+      max-width:120px;
+      font-size:12px;
+      padding:2px 4px;
+    }
+
+    .vstack{display:flex;flex-direction:column;gap:10px}
+    .row.center{justify-content:center}
+    .space{flex:1}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:var(--cardPad);margin:10px 0;box-shadow:0 6px 22px rgba(0,0,0,.25)}
+    .card.card-workout{background:var(--cardA, var(--card));}
+    .card.card-rest{background:var(--cardB, var(--card));}
+    .card.card-progress{background:var(--cardC, var(--card));}
+    .card-scrollable{
+      position:relative;
+    }
+    .card-scrollable::before,
+    .card-scrollable::after{
+      content:'';
+      position:absolute;
+      left:0;
+      right:0;
+      height:12px;
+      pointer-events:none;
+      opacity:0;
+      transition:opacity .15s ease-out;
+    }
+    .card-scrollable::before{
+      top:0;
+      background:linear-gradient(to bottom, rgba(0,0,0,.35), transparent);
+    }
+    .card-scrollable::after{
+      bottom:0;
+      background:linear-gradient(to top, rgba(0,0,0,.35), transparent);
+    }
+    .card-scrollable.has-scroll-top::before{opacity:1;}
+    .card-scrollable.has-scroll-bottom::after{opacity:1;}
+    .btn{background:var(--accent);color:#000;border:0;padding:10px 12px;border-radius:12px;cursor:pointer;font-weight:700}
+    #startFinish.isFinish{background:var(--ok); color:#fff}
+    .btn.block{width:100%;display:block}
+    .btn.secondary{background:#2f2f2f;color:var(--fg)}
+    .btn.workout{background:var(--accentHi); color:#000}
+    .btn.edit{background:var(--alt); color:#000}
+    #editExercisesBtn{background:#333333;color:#fff}
+    #startFinish,#editExercisesBtn{padding-top:6px;padding-bottom:6px}
+    .btn.ghost{background:transparent;border:1px solid var(--border);color:var(--fg)}
+    .badge{border:1px solid var(--border);border-radius:999px;padding:2px 8px;font-size:12px;opacity:.9}
+    input, select{background:#0e0e0e;border:1px solid var(--border);color:var(--fg);border-radius:10px;padding:6px 8px}
+    input::placeholder{color:#999}
+    .sm{width:88px}
+    .columns{display:grid;grid-template-columns:var(--colL) var(--colR);gap:10px}
+    .columns.swap .col-left{order:1}
+    .columns.swap .col-right{order:0}
+    /* Card height modes
+       - mode-match-left (default): cards stretch to match tallest column (typically left)
+       - mode-scroll-left: left card scrolls inside while matching right card height
+    */
+    .columns.mode-match-left>.col-left,
+    .columns.mode-match-left>.col-right{display:flex}
+    .columns.mode-match-left>.col-left>.card,
+    .columns.mode-match-left>.col-right>.card{flex:1 1 auto}
+    /* Scroll-left mode: natural heights; left card height is controlled via JS */
+    .columns.mode-scroll-left>.col-left,
+    .columns.mode-scroll-left>.col-right{display:block}
+    .glow{box-shadow:0 0 0 2px var(--accent) inset;border-radius:12px}
+
+
+    .editRow{display:block;margin-bottom:10px}
+    .editRow .editInputs{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+    .editRow .editInputs .nameInput{flex:1;min-width:0}
+    .editRow .editInputs .sm{flex:0 0 72px;max-width:80px}
+    .editRow .editInputs .editActions{flex:1 0 100%;display:flex;justify-content:center;margin-top:6px}
+
+.topbar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center}.topbar .space{display:none}
+    .right{justify-self:end}
+    .topbar .badge{border-radius:8px}
+    .topbar .right.row{gap:6px}
+    .name{font-size:22px;font-weight:900;cursor:pointer;color:var(--accent);text-align:center; 
+      text-shadow: 0 0 10px color-mix(in oklab, var(--accent) 50%, transparent), 0 0 22px color-mix(in oklab, var(--accent) 35%, transparent);
+      padding:8px 14px; border-radius:14px; box-shadow: 0 0 0 2px var(--accent) inset, 0 0 24px color-mix(in oklab, var(--accent) 25%, transparent)}
+    .menu{position:relative}
+    .menu button{width:36px;height:36px;border-radius:999px;background:#1c1c1c;color:var(--fg);border:1px solid var(--border)}
+    .dropdown{position:absolute;right:0;top:40px;background:var(--card);border:1px solid var(--border);border-radius:12px;min-width:260px;display:none;padding:6px;z-index:50}
+    .menu.open .dropdown{display:block}
+    .dropdown .item{display:block;width:100%;text-align:left;padding:8px 10px;border-radius:8px;background:transparent;border:0;color:var(--fg);cursor:pointer}
+    .dropdown .item:hover{background:#1d1d1d}
+
+    .timerBar{height:10px;background:var(--timerTrack);border-radius:999px;overflow:hidden}
+    .timerFill{height:100%;background:var(--timerFill);width:0%;transition:width .2s linear}
+    .gradTimer .timerFill{background:linear-gradient(90deg,var(--accent1,var(--accentLo)),var(--accent2,var(--accentHi)),var(--accent3,var(--accentHi)),var(--accent4,var(--accentLo)))}
+    .gradTimer #stickyFill{background:linear-gradient(90deg,var(--accent1,var(--accentLo)),var(--accent2,var(--accentHi)),var(--accent3,var(--accentHi)),var(--accent4,var(--accentLo)))}
+
+    .kv{display:grid;gap:4px;justify-items:stretch;text-align:left;flex:1;min-width:0}
+    .kv.left{justify-items:flex-start;text-align:left}
+    .row.center{justify-content:center}
+    .kv span{font-size:12px;opacity:.9;text-align:left}
+    .kv input.sm{width:100%;text-align:left}
+
+    .stickyBar{position:fixed;left:0;right:0;bottom:0;padding:8px 12px 12px;background:var(--card);border-top:1px solid var(--border);z-index:40}
+    .stickyInner{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+    .stickyMeta{display:flex;justify-content:space-between;opacity:.9;margin-top:6px}
+    .stickyProgress{height:8px;background:var(--timerTrack);border-radius:999px;overflow:hidden;margin-top:6px}
+    .stickyFill{height:100%;background:var(--timerFill)}
+
+    @keyframes tmgBurst { 0%{ transform:translateY(8px) scale(.9); opacity:0 } 20%{opacity:1} 100%{ transform:translateY(-24px) scale(1.1); opacity:0 } }
+    .burstWrap{position:fixed;inset:0;display:grid;place-items:center;pointer-events:none;z-index:80}
+    .burst span{font-size:2rem;animation:tmgBurst 1.2s ease-out both;display:inline-block;margin:0 6px}
+
+    dialog{border:1px solid var(--border);border-radius:12px;background:var(--card);color:var(--fg);padding:14px;max-width:960px;width:96%}
+    dialog::backdrop{background:rgba(0,0,0,.5)}
+    .hidden{display:none}
+    .confirm{background:var(--card);border-radius:var(--radius);padding:8px;margin-top:6px}
+
+    .mt8{margin-top:8px}
+    .mb6{margin-bottom:6px}
+    .center-text{text-align:center}
+
+
+    .exRow{cursor:pointer}
+    .exName{font-weight:800;font-family: var(--font-head)}
+    .emojiHold{display:block;margin-top:4px}
+
+
+    
+    /* 
+    /* Factor 7 – FF7 menu-style refinements */
+    .theme-factor7 .card{
+      border-color:#f7f7ff;
+      border-width:3px;
+      border-radius:8px;
+    }
+    .theme-factor7 .card.card-workout,
+    .theme-factor7 .card.card-rest,
+    .theme-factor7 .card.card-progress{
+      border-color:#f7f7ff;
+    }
+
+    /* Top title + streak/timer text in icy white */
+    .theme-factor7 .name{
+      color:#ffffff;
+      text-shadow:none;
+      box-shadow:none;
+    }
+    .theme-factor7 .topbar .badge,
+    .theme-factor7 .topbar .badge *{
+      color:#ffffff;
+    }
+
+    /* Pills (streak/time) lose visible border by matching the card background */
+    .theme-factor7 .topbar .badge{
+      background:var(--cardA, var(--card));
+      border-color:var(--cardA, var(--card));
+    }
+
+    /* Inputs/selects: match their host card backgrounds */
+    .theme-factor7 .card.card-workout input,
+    .theme-factor7 .card.card-workout select{
+      background:var(--cardA);
+      border-color:var(--cardA);
+      color:var(--fg);
+    }
+    .theme-factor7 .card.card-rest input,
+    .theme-factor7 .card.card-rest select{
+      background:var(--cardB);
+      border-color:var(--cardB);
+      color:var(--fg);
+    }
+    .theme-factor7 .card.card-progress input,
+    .theme-factor7 .card.card-progress select{
+      background:var(--cardC);
+      border-color:var(--cardC);
+      color:var(--fg);
+    }
+
+    /* Keep menu button flat, no extra white border */
+    .theme-factor7 #menuBtn{
+      border-color:var(--cardA, var(--card));
+      background:var(--cardA, var(--card));
+      color:var(--fg);
+    }
+
+    /* FF7-style rest bar: dark track, pink fill, sharp edges */
+    .theme-factor7 .timerBar{
+      background:#3a3a3a;
+      border-radius:0;
+    }
+    .theme-factor7 .timerFill,
+    .theme-factor7 #stickyFill{
+      background:#f3b6c4; /* soft pink like FF7 EXP bar */
+      border-radius:0;
+    }
+
+    /* 👉 pointer next to selected exercise in Factor 7 */
+    .theme-factor7 .exRow{
+      position:relative;
+      /* extra space for the hand graphic */
+      padding-left:40px;
+    }
+    .theme-factor7 .exRow.glow::before{
+      content:'';
+      position:absolute;
+      left:8px;
+      top:50%;
+      transform:translateY(-50%);
+      width:32px;
+      height:16px;
+      background-image:url('FF7Cursor.png');
+      background-repeat:no-repeat;
+      background-position:center;
+      background-size:contain;
+    }
+
+    /* Factor 7: make modal borders match card borders (white, thick, rounded) */
+    .theme-factor7 dialog{
+      border-color:var(--border) !important;
+      border-width:3px !important;
+      border-style:solid !important;
+      border-radius:8px !important;
+    }
+
+    /* ==========================================================
+       Gotta Lift Them All – classic Game Boy menu aesthetic
+       Derived exclusively from the attached Pokémon menu.  Only
+       black, white and greys are used.  Cards adopt subtle
+       grey variations while text remains dark for maximum
+       contrast. A small black triangular cursor appears next to
+       the selected exercise, similar to the original menu.
+       Borders are thick and squared to evoke the Game Boy frame,
+       and timer bars have sharp edges with a white track and
+       black fill.
+    ========================================================== */
+    .theme-gottalift{
+      /* base colours */
+      --bg:#ffffff;
+      --fg:#000000;
+      --muted:#444444;
+      /* cards now all use pure white backgrounds */
+      --card:#ffffff;
+      --cardA:#ffffff;
+      --cardB:#ffffff;
+      --cardC:#ffffff;
+      /* border and accent colours: always black */
+      --border:#000000;
+      --accent:#000000;
+      --accent1:#000000;
+      --accent2:#000000;
+      --accent3:#000000;
+      --accent4:#000000;
+      --accentLo:#000000;
+      --accentHi:#000000;
+      /* timer colours: black fill on white track */
+      --timerFill:#000000;
+      --timerTrack:#ffffff;
+      --alt:#000000;
+    }
+
+    /* Double-line card borders for Gotta Lift: mimic Game Boy frame */
+    .theme-gottalift .card{
+      border:4px double #000000;
+      border-radius:0;
+    }
+    .theme-gottalift .card.card-workout,
+    .theme-gottalift .card.card-rest,
+    .theme-gottalift .card.card-progress{
+      border:4px double #000000;
+    }
+
+    /* Top title and streak/timer badges dark for contrast */
+    .theme-gottalift .name{
+      color:#000000;
+      text-shadow:none;
+      box-shadow:none;
+    }
+    .theme-gottalift .topbar .badge,
+    .theme-gottalift .topbar .badge *{
+      color:#000000;
+    }
+    /* Hide badge borders by matching background to card colour */
+    .theme-gottalift .topbar .badge{
+      background:var(--cardA, var(--card));
+      border-color:var(--cardA, var(--card));
+    }
+
+    /* Inputs/selects: blend into their host card backgrounds */
+    .theme-gottalift .card.card-workout input,
+    .theme-gottalift .card.card-workout select{
+      background:#ffffff;
+      border-color:#000000;
+      color:#000000;
+    }
+    .theme-gottalift .card.card-rest input,
+    .theme-gottalift .card.card-rest select{
+      background:#ffffff;
+      border-color:#000000;
+      color:#000000;
+    }
+    .theme-gottalift .card.card-progress input,
+    .theme-gottalift .card.card-progress select{
+      background:#ffffff;
+      border-color:#000000;
+      color:#000000;
+    }
+
+    /* Menu button: flat without extra border */
+    .theme-gottalift #menuBtn{
+      border-color:var(--cardA, var(--card));
+      background:var(--cardA, var(--card));
+      color:var(--fg);
+    }
+
+    /* Sharp-edged rest/progress bars */
+    .theme-gottalift .timerBar{
+      background:var(--timerTrack);
+      border-radius:0;
+    }
+    .theme-gottalift .timerFill,
+    .theme-gottalift #stickyFill{
+      background:var(--timerFill);
+      border-radius:0;
+    }
+
+    /* Ensure rest timer digits and sticky timer digits are black */
+    .theme-gottalift #restLabel,
+    .theme-gottalift #stickyTime{
+      color:#000000 !important;
+    }
+
+    /* Pointer: small black triangle on selected exercise */
+    .theme-gottalift .exRow{
+      position:relative;
+      padding-left:26px;
+    }
+    .theme-gottalift .exRow.glow::before{
+      content:'\25B6'; /* black right-pointing triangle */
+      position:absolute;
+      left:8px;
+      top:50%;
+      transform:translateY(-50%);
+      font-size:18px;
+      color:#000000;
+    }
+
+    /* Buttons: white background with black text for Gotta Lift */
+    .theme-gottalift .btn{
+      background:var(--cardA, var(--card));
+      color:#000000;
+      border:2px solid #000000;
+      border-radius:0;
+    }
+    .theme-gottalift .btn.secondary{
+      background:var(--cardA, var(--card));
+      color:#000000;
+      border:2px solid #000000;
+      border-radius:0;
+    }
+    .theme-gottalift .btn.workout{
+      background:var(--cardA, var(--card));
+      color:#000000;
+      border:2px solid #000000;
+      border-radius:0;
+    }
+    .theme-gottalift .btn.edit{
+      background:var(--cardA, var(--card));
+      color:#000000;
+      border:2px solid #000000;
+      border-radius:0;
+    }
+    .theme-gottalift .btn.ghost{
+      background:transparent;
+      border:2px solid #000000;
+      color:#000000;
+      border-radius:0;
+    }
+
+    /* Force all text in progress card to black */
+    .theme-gottalift .card.card-progress,
+    .theme-gottalift .card.card-progress *{
+      color:#000000 !important;
+    }
+
+    /* Ensure exercise names and list items are black */
+    .theme-gottalift #exerciseList .card.exRow,
+    .theme-gottalift #exerciseList .exName{
+      color:#000000 !important;
+    }
+
+    /* --- Additional Gotta Lift tweaks per user request --- */
+    /* Ensure all text in the rest card is black */
+    .theme-gottalift .card.card-rest,
+    .theme-gottalift .card.card-rest *{
+      color:#000000 !important;
+    }
+
+    /* Remove borders from each exercise row in the list */
+    .theme-gottalift #exerciseList .card.exRow{
+      /* Hide borders and drop-shadows to make rows blend into the background */
+      border:none !important;
+      box-shadow:none !important;
+      background:var(--bg) !important;
+      margin:0;
+      /* keep left padding to offset text away from the arrow */
+      padding:6px 0 6px 36px;
+    }
+
+    /* Ensure selected exercise rows do not show glow highlight; only the arrow indicates selection */
+    .theme-gottalift .exRow.glow{
+      box-shadow:none !important;
+      background:var(--bg) !important;
+    }
+
+    /* Square, double-bordered dialogs and white input backgrounds */
+    .theme-gottalift dialog{
+      background:#ffffff;
+      color:#000000;
+      border:4px double #000000;
+      border-radius:0;
+    }
+    /* Ensure all text boxes inside dialogs are white with black text */
+    .theme-gottalift dialog input,
+    .theme-gottalift dialog select,
+    .theme-gottalift dialog textarea{
+      background:#ffffff;
+      color:#000000;
+      border:2px solid #000000;
+      border-radius:0;
+    }
+
+    /* Ensure all text within modals uses black */
+    .theme-gottalift dialog,
+    .theme-gottalift dialog *{
+      color:#000000;
+    }
+
+    /* Make all input/select/textarea boxes square (no rounded corners) throughout Gotta Lift theme */
+    .theme-gottalift input,
+    .theme-gottalift select,
+    .theme-gottalift textarea{
+      border-radius:0 !important;
+    }
+
+    /* Progress bar text (timer and rest labels) should be black */
+    .theme-gottalift .timerBar span,
+    .theme-gottalift .timerFill span,
+    .theme-gottalift #stickyTime,
+    .theme-gottalift #restLabel{
+      color:#000000 !important;
+    }
+
+    /* Sticky bar exercise name should be black */
+    .theme-gottalift #stickyName{
+      color:#000000 !important;
+    }
+
+    /* Progress graph: white background with black text */
+    .theme-gottalift #growthSvgInline{
+      background:#ffffff;
+      border-color:#000000;
+    }
+    .theme-gottalift #growthSvgInline text{
+      fill:#000000 !important;
+    }
+
+    /* Summary modal cards: white background, double black border, square corners and black text */
+    .theme-gottalift .sumCard{
+      background:#ffffff;
+      border:4px double #000000;
+      border-radius:0;
+      color:#000000;
+    }
+    .theme-gottalift .sumCard *{
+      color:#000000;
+    }
+    .theme-gottalift .sumCard select,
+    .theme-gottalift .sumCard input{
+      background:#ffffff;
+      color:#000000;
+      border:2px solid #000000;
+      border-radius:0;
+    }
+
+    /* ==========================================================
+       Tales to Be Told – Undertale inspired premium theme
+       This theme recreates the classic RPG battle menu aesthetic:
+       pure black backgrounds, thick white borders around all cards
+       and modals, white text throughout, orange-lined buttons with
+       orange text on black, and special yellow Start/Finish and Edit
+       buttons. Exercises are rendered as plain rows with a white
+       asterisk prefix and a red heart indicating the selected row.
+       The rest timer track is red and fills with yellow from left to
+       right, and all inputs/select boxes are square with white borders.
+    ========================================================== */
+    .theme-talesToBeTold{
+      /* colour palette */
+      --bg:#000000;
+      --fg:#ffffff;
+      --muted:#bbbbbb;
+      --card:#000000;
+      --cardA:#000000;
+      --cardB:#000000;
+      --cardC:#000000;
+      --border:#ffffff;
+      /* orange accent for default buttons */
+      --accent:#ffa500;
+      --accent1:#ffa500;
+      --accent2:#ffa500;
+      --accent3:#ffa500;
+      --accent4:#ffa500;
+      --accentLo:#ffa500;
+      --accentHi:#ffa500;
+      /* timer colours: red track with yellow fill */
+      --timerTrack:#ff0000;
+      --timerFill:#ffff33;
+      --alt:#ffa500;
+
+      /* Override fonts for Tales to Be Told: use 8bit operator and Comic Sans */
+      --font-ui:'8bitoperator', 'Comic Sans MS', 'Comic Sans', sans-serif;
+      --font-head:'8bitoperator', 'Comic Sans MS', 'Comic Sans', sans-serif;
+      --font-num:'8bitoperator', 'Comic Sans MS', 'Comic Sans', sans-serif;
+    }
+
+    /* White thick borders on cards, square corners */
+    .theme-talesToBeTold .card{
+      border:4px solid #ffffff;
+      border-radius:0;
+      background:var(--card);
+    }
+    .theme-talesToBeTold .card.card-workout,
+    .theme-talesToBeTold .card.card-rest,
+    .theme-talesToBeTold .card.card-progress{
+      border:4px solid #ffffff;
+      border-radius:0;
+    }
+
+    /* Top bar title and badges: white text, hidden border on badges */
+    .theme-talesToBeTold .name{
+      color:#ffffff;
+      text-shadow:none;
+      box-shadow:none;
+    }
+    .theme-talesToBeTold .topbar .badge,
+    .theme-talesToBeTold .topbar .badge *{
+      color:#ffffff;
+    }
+    .theme-talesToBeTold .topbar .badge{
+      background:var(--cardA, var(--card));
+      border-color:var(--cardA, var(--card));
+    }
+
+    /* Inputs/selects/textarea: black background with white text and white border, square corners */
+    .theme-talesToBeTold input,
+    .theme-talesToBeTold select,
+    .theme-talesToBeTold textarea{
+      background:#000000;
+      color:#ffffff;
+      border:2px solid #ffffff;
+      border-radius:0 !important;
+    }
+
+    /* Card-specific input backgrounds still black */
+    .theme-talesToBeTold .card.card-workout input,
+    .theme-talesToBeTold .card.card-workout select{
+      background:#000000;
+      border-color:#ffffff;
+      color:#ffffff;
+    }
+    .theme-talesToBeTold .card.card-rest input,
+    .theme-talesToBeTold .card.card-rest select{
+      background:#000000;
+      border-color:#ffffff;
+      color:#ffffff;
+    }
+    .theme-talesToBeTold .card.card-progress input,
+    .theme-talesToBeTold .card.card-progress select{
+      background:#000000;
+      border-color:#ffffff;
+      color:#ffffff;
+    }
+
+    /* Menu button: orange border and text */
+    .theme-talesToBeTold #menuBtn{
+      background:#000000;
+      color:#ffa500;
+      border:2px solid #ffa500;
+      border-radius:0;
+    }
+
+    /* Timer bars: red track with yellow fill and sharp edges */
+    .theme-talesToBeTold .timerBar{
+      background:var(--timerTrack);
+      border-radius:0;
+    }
+    .theme-talesToBeTold .timerFill,
+    .theme-talesToBeTold #stickyFill{
+      background:var(--timerFill);
+      border-radius:0;
+    }
+
+    /* Rest and sticky timer labels always white */
+    .theme-talesToBeTold #restLabel,
+    .theme-talesToBeTold #stickyTime{
+      color:#ffffff !important;
+    }
+    .theme-talesToBeTold #stickyName{
+      color:#ffffff !important;
+    }
+
+    /* Exercise list: remove card visual, apply asterisk prefix and red heart for selected row */
+    .theme-talesToBeTold #exerciseList .card.exRow{
+      border:none !important;
+      box-shadow:none !important;
+      background:var(--bg) !important;
+      margin:0;
+      padding:0;
+    }
+    /* Exercise rows for Tales to Be Told are displayed as a grid with three columns:
+     * heart, asterisk and exercise name.  This approach ensures the markers and name
+     * occupy their own space in a single row without overlapping and stay on one line. */
+        /* Exercise rows for Tales to Be Told: explicit three-column grid with heart, asterisk and name.
+       Using real elements instead of pseudo-elements keeps markers and text perfectly aligned and
+       prevents row height from changing when selected. */
+    .theme-talesToBeTold #exerciseList .card.exRow{
+      border:none !important;
+      box-shadow:none !important;
+      background:var(--bg) !important;
+      margin:3px 0;
+      padding:0;
+    }
+    .theme-talesToBeTold .talesRow{
+      display:grid;
+      grid-template-columns:24px 24px 1fr;
+      align-items:center;
+      padding:6px 0;
+      background:var(--bg);
+      color:#ffffff !important;
+      line-height:1.1;
+    }
+    .theme-talesToBeTold .talesRow.glow{
+      padding:6px 0;
+      transform:none !important;
+      box-shadow:none !important;
+    }
+    .theme-talesToBeTold .talesRow .exHeart{
+      grid-column:1;
+      text-align:center;
+      font-size:20px;
+      color:#ff0000;
+      line-height:1;
+    }
+    .theme-talesToBeTold .talesRow .exStar{
+      grid-column:2;
+      text-align:center;
+      font-size:20px;
+      color:#ffffff;
+      line-height:1;
+    }
+    .theme-talesToBeTold .talesRow .exNameCol{
+      grid-column:3;
+      line-height:1.1;
+    }
+    .theme-talesToBeTold .talesRow .determinationLine{
+      grid-column:1 / span 3;
+      margin-top:2px;
+      font-size:11px;
+      line-height:1.3;
+      color:#ffffff;
+    }
+    .theme-talesToBeTold .talesRow .determinationLine .determinationWord{
+      color:#ff0000;
+      font-weight:700;
+    }
+
+    /* Buttons: default orange for all except specific ones */
+    .theme-talesToBeTold .btn{
+      background:#000000;
+      color:#ffa500;
+      border:2px solid #ffa500;
+      border-radius:0;
+    }
+    .theme-talesToBeTold .btn.secondary{
+      background:#000000;
+      color:#ffa500;
+      border:2px solid #ffa500;
+      border-radius:0;
+    }
+    /* Ghost buttons: orange border and text on transparent background */
+    .theme-talesToBeTold .btn.ghost{
+      background:transparent;
+      color:#ffa500;
+      border:2px solid #ffa500;
+      border-radius:0;
+    }
+    /* Yellow Start/Finish and Edit buttons */
+    .theme-talesToBeTold #startFinish,
+    .theme-talesToBeTold #editExercisesBtn{
+      background:#000000;
+      color:#ffff33;
+      border:2px solid #ffff33;
+      border-radius:0;
+    }
+
+    /* Right card buttons: uppercase text and orange font */
+    .theme-talesToBeTold .card.card-rest .btn,
+    .theme-talesToBeTold .card.card-rest .btn.secondary{
+      text-transform: uppercase;
+      color:#ffa500 !important;
+    }
+
+    /* Ensure all text within progress card is white */
+    .theme-talesToBeTold .card.card-progress,
+    .theme-talesToBeTold .card.card-progress *{
+      color:#ffffff !important;
+    }
+    /* Ensure all text within rest card is white */
+    .theme-talesToBeTold .card.card-rest,
+    .theme-talesToBeTold .card.card-rest *{
+      color:#ffffff !important;
+    }
+
+    /* Progress graph: black background with white axes/labels */
+    .theme-talesToBeTold #growthSvgInline{
+      background:#000000;
+      border-color:#ffffff;
+    }
+    .theme-talesToBeTold #growthSvgInline text{
+      fill:#ffffff !important;
+    }
+
+    /* Progress graph lines: green line as requested (#1A8A3B) */
+    .theme-talesToBeTold #growthSvgInline path,
+    .theme-talesToBeTold #growthSvgInline line{
+      stroke:#1A8A3B !important;
+    }
+
+    /* Dialogs (modals): black background with thick white borders and square corners */
+    .theme-talesToBeTold dialog{
+      background:#000000;
+      color:#ffffff;
+      border:4px solid #ffffff;
+      border-radius:0;
+    }
+    .theme-talesToBeTold dialog,
+    .theme-talesToBeTold dialog *{
+      color:#ffffff;
+    }
+    /* Inputs in dialogs: same as rest of theme */
+    .theme-talesToBeTold dialog input,
+    .theme-talesToBeTold dialog select,
+    .theme-talesToBeTold dialog textarea{
+      background:#000000;
+      color:#ffffff;
+      border:2px solid #ffffff;
+      border-radius:0;
+    }
+    /* Summary modal cards: black with white double border and white text */
+    .theme-talesToBeTold .sumCard{
+      background:#000000;
+      border:4px solid #ffffff;
+      border-radius:0;
+      color:#ffffff;
+    }
+    .theme-talesToBeTold .sumCard *{
+      color:#ffffff;
+    }
+    .theme-talesToBeTold .sumCard select,
+    .theme-talesToBeTold .sumCard input{
+      background:#000000;
+      color:#ffffff;
+      border:2px solid #ffffff;
+      border-radius:0;
+    }
+/* Theme overrides appended (keep original intact) */
+    .theme-blood{ --accentLo:#801010; --accentHi:#ff9090; --alt:#ffd166 }
+    .theme-ocean{ --accentLo:#1b8c96; --accentHi:#b6f4fb; --alt:#ffe08a }
+    .theme-forest{ --accentLo:#1f7a44; --accentHi:#a7f3c7; --alt:#f59e0b }
+    .theme-amber{ --accentLo:#7a560e; --accentHi:#ffe08a; --alt:#60a5fa }
+    .theme-royal{ --accentLo:#3a4599; --accentHi:#c9d0ff; --alt:#34d399 }
+    .theme-grape{ --accentLo:#5a45a6; --accentHi:#d9cafe; --alt:#fb7185 }
+    .theme-rose{ --accentLo:#8f2e3f; --accentHi:#ffc0ca; --alt:#60a5fa }
+    .theme-sunset{ --accentLo:#a14a17; --accentHi:#ffc19c; --alt:#22d3ee }
+    .theme-cyber{ --accentLo:#007a85; --accentHi:#9bf4ff; --alt:#ffd166 }
+    .theme-mint{ --accentLo:#1c7a5a; --accentHi:#a7f3d0; --alt:#f59e0b }
+    .theme-gold{ --accentLo:#8f6b18; --accentHi:#ffe9a6; --alt:#60a5fa }
+    .theme-steel{ --accentLo:#2a6f90; --accentHi:#c7ebff; --alt:#f59e0b }
+    .theme-coral{ --accentLo:#913d3d; --accentHi:#ffc7c7; --alt:#34d399 }
+    .theme-neon{ --accentLo:#178a06; --accentHi:#b6ffab; --alt:#60a5fa }
+    .theme-plum{ --accentLo:#7a3a90; --accentHi:#f0c9ff; --alt:#34d399 }
+    .theme-ice{ --accentLo:#3a7a96; --accentHi:#e0f6ff; --alt:#f59e0b }
+    .theme-slate{ --accentLo:#475569; --accentHi:#e2e8f0; --alt:#22d3ee }
+    .theme-lime{ --accentLo:#477a12; --accentHi:#e6ffb3; --alt:#60a5fa }
+    .theme-fire{ --accentLo:#842222; --accentHi:#ffadad; --alt:#22d3ee }
+    .theme-azure{ --accentLo:#2a6aa1; --accentHi:#c7e1ff; --alt:#f59e0b }
+
+    /*
+      Additional theme variety modifications
+
+      To increase the contrast and variation across themes, the following overrides customise
+      several existing themes. Each override is appended after the base definitions so that
+      it takes precedence via CSS specificity. These adjustments avoid removing any
+      existing definitions and instead override specific CSS variables. This ensures the
+      app continues to function correctly while offering new colour palettes including
+      light backgrounds with dark text where appropriate.
+    */
+
+    /* Blood in the Eyes – completely black surfaces with red accents and white type */
+    .theme-blood{
+      --bg:#000000;
+      --fg:#ffffff;
+      --muted:#cccccc;
+      --card:#000000;
+      --cardA:#000000;
+      --cardB:#000000;
+      --cardC:#000000;
+      --border:#000000;
+      --accent:#ff0000;
+      --accent1:#ff0000;
+      --accent2:#ff0000;
+      --accent3:#ff0000;
+      --accent4:#ff0000;
+      --accentLo:#ff0000;
+      --accentHi:#ff0000;
+      --timerFill:#ff0000;
+      --alt:#ff0000;
+    }
+
+    /* It's a me – bright theme with high‑contrast dark text and light tints for readability */
+    .theme-itsMe{
+      /* It's a Me (Mario-inspired) – Super Mario logo palette */
+      --bg:#000000;          /* black outline background */
+      --fg:#fefcf5;
+      --muted:#ffe08a;
+
+      /* Cards use the four logo colours */
+      --card:#0095da;        /* blue */
+      --cardA:#e52521;       /* red */
+      --cardB:#43b047;       /* green */
+      --cardC:#fbd000;       /* yellow */
+
+      --border:#000000;
+
+      /* Buttons use the same logo colours */
+      --accent:#e52521;      /* primary accent (red) */
+      --accent1:#e52521;     /* main button background */
+      --accent2:#fbd000;     /* secondary (yellow) */
+      --accent3:#0095da;     /* alt (blue) */
+      --accent4:#43b047;     /* alt (green) */
+
+      --accentLo:#e52521;
+      --accentHi:#fbd000;
+      --timerFill:#0095da;
+      --alt:#43b047;
+    }
+
+    /* Big boss – muted teal palette on very dark backgrounds */
+    .theme-bigBoss{
+      --bg:#030303;
+      --fg:#96C8B7;
+      --muted:#96C8B7;
+      --card:#030303;
+      --cardA:#030303;
+      --cardB:#030303;
+      --cardC:#030303;
+      --border:#548276;
+      --accent:#548276;
+      --accent1:#548276;
+      --accent2:#548276;
+      --accent3:#548276;
+      --accent4:#548276;
+      --accentLo:#548276;
+      --accentHi:#548276;
+      --timerFill:#548276;
+      --alt:#548276;
+    }
+
+    /* The white wolf – black backdrop with light grey text and red highlights */
+    .theme-whiteWolf{
+      --bg:#000000;
+      --fg:#d3d3d3;
+      --muted:#a8a8a8;
+      --card:#000000;
+      --cardA:#000000;
+      --cardB:#000000;
+      --cardC:#000000;
+      --border:#d3d3d3;
+      /* Default accents are light grey; some specific accents use red for selection */
+      --accent:#d3d3d3;
+      --accent1:#d3d3d3;
+      --accent2:#d3d3d3;
+      --accent3:#ff0000;
+      --accent4:#ff0000;
+      --accentLo:#d3d3d3;
+      --accentHi:#d3d3d3;
+      --timerFill:#d3d3d3;
+      --alt:#d3d3d3;
+    }
+
+    /* Gym pop – softer pastel palette with extra contrast for text */
+    .theme-gymPop{
+      /* Lighten the overall background so dark fonts stand out */
+      --bg:#fff6fa;        /* extremely light pink background */
+      --fg:#333333;        /* dark text for good contrast */
+      --muted:#666666;
+      --card:#ffffff;
+      --cardA:#fff0f8;     /* very light pink card */
+      --cardB:#f0f9ff;     /* very light blue card */
+      --cardC:#f0fff0;     /* very light green card */
+      --border:#e2e2e2;
+      /* Pastel accents remain but are slightly softened */
+      --accent:#ffa3c9;    /* pastel pink */
+      --accent1:#ffa3c9;
+      --accent2:#9ad8ff;   /* soft pastel blue */
+      --accent3:#c4f0c4;   /* soft pastel green */
+      --accent4:#c4f0c4;
+      --accentLo:#ffa3c9;
+      --accentHi:#9ad8ff;
+      --timerFill:#ffa3c9;
+      --alt:#9ad8ff;
+    }
+
+    /* Improve readability for It's a me and Gym Pop theme input fields */
+    .theme-itsMe input,
+    .theme-itsMe select{
+      background:#ffffff;
+      color:#333333;
+      border-color:#cccccc;
+    }
+    .theme-gymPop input,
+    .theme-gymPop select{
+      background:#ffffff;
+      color:#222222;
+      border-color:#dcdcdc;
+    }
+
+    /* Refine Big Boss palette: deep black surfaces with teal text and a distinct progress colour */
+    .theme-bigBoss{
+      --bg:#030303;
+      --fg:#4E8874;          /* all text uses the teal border colour */
+      --muted:#4E8874;       /* muted text matches fg for consistent appearance */
+      --card:#030303;
+      --cardA:#030303;
+      --cardB:#030303;
+      --cardC:#030303;
+      --border:#4E8874;      /* borders and accents are the same teal */
+      --accent:#4E8874;
+      --accent1:#4E8874;
+      --accent2:#97C7B7;     /* progress bar and rest timer fill */
+      --accent3:#4E8874;
+      --accent4:#4E8874;
+      --accentLo:#4E8874;
+      --accentHi:#4E8874;
+      --timerFill:#97C7B7;
+      --alt:#4E8874;
+    }
+
+    /* Override theme variables for It's a me: ensure the alt colour uses F8DF05 (yellow) to include all requested colours */
+    .theme-itsMe{
+      /* It's a Me (Mario-inspired) – Super Mario logo palette */
+      --bg:#000000;          /* black outline background */
+      --fg:#fefcf5;
+      --muted:#ffe08a;
+
+      /* Cards use the four logo colours */
+      --card:#0095da;        /* blue */
+      --cardA:#e52521;       /* red */
+      --cardB:#43b047;       /* green */
+      --cardC:#fbd000;       /* yellow */
+
+      --border:#000000;
+
+      /* Buttons use the same logo colours */
+      --accent:#e52521;      /* primary accent (red) */
+      --accent1:#e52521;     /* main button background */
+      --accent2:#fbd000;     /* secondary (yellow) */
+      --accent3:#0095da;     /* alt (blue) */
+      --accent4:#43b047;     /* alt (green) */
+
+      --accentLo:#e52521;
+      --accentHi:#fbd000;
+      --timerFill:#0095da;
+      --alt:#43b047;
+    }
+
+    /* It's a Me – thicker borders and progress card text tweaks */
+    .theme-itsMe .card{
+      border-width:3px;
+      border-color:#000000;
+    }
+    .theme-itsMe dialog{
+      border-width:3px;
+      border-color:#000000;
+    }
+    .theme-itsMe .card.card-progress,
+    .theme-itsMe .card.card-progress *{
+      color:#000000 !important;
+    }
+    .theme-itsMe #openGrowthModal{
+      color:#ffffff !important;
+    }
+
+
+    /* Override theme variables for Gym Pop: assign specific pastel card colours and black text.  
+       Card mapping: left card uses card (workout) → F6D0DE, top card uses cardA → C8B3E1, 
+       right card uses cardB → CBE6EE, and progress card uses cardC → F6EDDA.  
+       Accents are set to pastel variants so that graphs and buttons can use theme colours. */
+    .theme-gymPop{
+      --fg:#000000;
+      --muted:#000000;
+      --card:#C8B3E1;      /* top header card */
+      --cardA:#F6D0DE;     /* left workout card */
+      --cardB:#CBE6EE;     /* right rest card */
+      --cardC:#F6EDDA;     /* bottom progress card */
+      --border:#d0c8d8;
+      /* Pastel accents correspond to theme colours */
+      --accent:#C8B3E1;
+      --accent1:#C8B3E1;
+      --accent2:#CBE6EE;
+      --accent3:#F6D0DE;
+      --accent4:#F6EDDA;
+      --accentLo:#C8B3E1;
+      --accentHi:#CBE6EE;
+      --timerFill:#C8B3E1;
+      --alt:#F6EDDA;
+    }
+    /* Ensure Gym Pop form fields stay legible with dark text and light borders */
+    .theme-gymPop input,
+    .theme-gymPop select{
+      color:#000000;
+      border-color:#b9b9b9;
+    }
+
+    /* Further Big Boss overrides: exercise list text uses accent colour; rest timer digits match progress fill */
+    .theme-bigBoss #exerciseList .card.exRow,
+    .theme-bigBoss #exerciseList .exName{
+      color:#4E8874;
+    }
+    .theme-bigBoss #restLabel,
+    .theme-bigBoss #stickyTime{
+      color:#97C7B7 !important;
+    }
+
+    /* Final Gym Pop styling tweaks: ensure specific UI elements adopt theme colours and improve readability */
+    /* Right and progress cards: explicitly set text color to black for all contents */
+    .theme-gymPop .card.card-rest,
+    .theme-gymPop .card.card-progress{
+      color:#000000;
+    }
+    .theme-gymPop .card.card-rest *,
+    .theme-gymPop .card.card-progress *{
+      color:#000000;
+    }
+    /* Reset buttons (rest timer and sticky bar) use one of the theme pastel accents */
+    .theme-gymPop #restReset,
+    .theme-gymPop #stickyReset{
+      /* Reset buttons use a distinct pastel (accent3) */
+      background:var(--accent3) !important;
+      color:#000000 !important;
+    }
+    /* Menu (⋮) button adopts a theme colour for its glyph */
+    .theme-gymPop #menuBtn{
+      /* Menu button (⋮) uses a pastel blue accent for visibility.  
+         Override base menu styles with !important to ensure pastel background shows. */
+      background:var(--accent2) !important;
+      color:#000 !important;
+      border:1px solid var(--accent2) !important;
+      border-radius:999px !important;
+    }
+    /* Open full Growth Charts button uses a different pastel accent */
+    .theme-gymPop #openGrowthModal{
+      background:var(--accent4) !important;
+      color:#000000 !important;
+    }
+    /* Progress graph background to white with black labels */
+    .theme-gymPop #growthSvgInline{
+      background:#ffffff;
+      border-color:var(--border);
+    }
+    .theme-gymPop #growthSvgInline text{
+      fill:#000000 !important;
+    }
+
+    /* Additional Gym Pop tweaks: force header and edit button text to be black and align with pastel palette */
+/* Adjust Gym Pop header (TechMuscleGod) to be white for contrast on pastel backgrounds */
+    .theme-gymPop .name{
+      color:#ffffff;
+      text-shadow:none;
+      /* remove inner box-shadow used for dark header; keep simple look */
+      box-shadow:none;
+    }
+    .theme-gymPop #editExercisesBtn{
+      background:var(--border);
+      color:#000000;
+    }
+
+    /* Diversify ocean theme with teal green accents and warm alt */
+    .theme-ocean{
+      --accent:#1abc9c;
+      --accent1:#1abc9c;
+      --accent2:#1abc9c;
+      --accent3:#1abc9c;
+      --accent4:#1abc9c;
+      --accentLo:#147272;
+      --accentHi:#88ffe0;
+      --timerFill:#1abc9c;
+      --alt:#f58a42;
+    }
+
+    /* Diversify steel theme with steel blue palette and golden highlights */
+    .theme-steel{
+      --accent:#5c83b5;
+      --accent1:#5c83b5;
+      --accent2:#5c83b5;
+      --accent3:#5c83b5;
+      --accent4:#5c83b5;
+      --accentLo:#3a5783;
+      --accentHi:#a8c8e6;
+      --timerFill:#5c83b5;
+      --alt:#fbd38d;
+    }
+
+    /* Diversify azure theme with vibrant azure and soft coral alt */
+    .theme-azure{
+      --accent:#3c9df6;
+      --accent1:#3c9df6;
+      --accent2:#3c9df6;
+      --accent3:#3c9df6;
+      --accent4:#3c9df6;
+      --accentLo:#246bbf;
+      --accentHi:#9fc8ff;
+      --timerFill:#3c9df6;
+      --alt:#f7a072;
+    }
+
+    /* New Pink theme */
+    .theme-pink{ --bg:#140812; --fg:#ffe9f6; --muted:#f4cfe3; --card:#1c0d19; --border:#2a1426;
+                 --accent:#ff4da6; --accentLo:#a3195f; --accentHi:#ffb3d6; --timerFill:#ff4da6; --alt:#8be9ff }
+
+    /* Factor 7 theme – inspired by classic JRPG menus.  
+       Dark navy backgrounds with vibrant sea green and magenta accents evoke an otherworldly aesthetic. */
+    .theme-factor7{
+      --bg:#000223;        /* deepest blue-black backdrop */
+      --fg:#ffffff;        /* pale icy text for high contrast */
+      --muted:#a0b9d8;     /* desaturated blue for muted text */
+      --card:#001b85;      /* default card: deep royal blue */
+      --cardA:#001b85;     /* top card (header) shares base blue */
+      --cardB:#000e46;     /* right card: darker blue for contrast */
+      --cardC:#0a214f;     /* progress card: mid-tone blue */
+      --border:#f7f7ff;    /* white border like FF7 frame */    /* border & outlines: bold azure */
+      --accent:#0053ad;    /* primary accent: bright azure */
+      --accent1:#0053ad;
+      --accent2:#20B2AA;   /* sea green for secondary highlights */
+      --accent3:#B1048B;   /* magenta for tertiary highlights */
+      --accent4:#ffffff;   /* white for occasional highlights */
+      --accentLo:#0053ad;
+      --accentHi:#20B2AA;
+      --timerFill:#0053ad; /* progress bar / rest timer fill */
+      --alt:#20B2AA;       /* alternative accent */
+    }
+
+
+
+    /* Final Gym Pop pastel mapping with white timer track */
+    .theme-gymPop{
+      --bg:#fff6fa;
+      --fg:#000000;
+      --muted:#000000;
+      --card:#C8B3E1;  /* top card */
+      --cardA:#F6D0DE; /* left workout */
+      --cardB:#CBE6EE; /* right rest */
+      --cardC:#F6EDDA; /* progress */
+      --border:#d0c8d8;
+      --accent:#C8B3E1;
+      --accent1:#C8B3E1;
+      --accent2:#CBE6EE;
+      --accent3:#F6D0DE;
+      --accent4:#F6EDDA;
+      --accentLo:#C8B3E1;
+      --accentHi:#CBE6EE;
+      --timerFill:#C8B3E1;
+      --timerTrack:#ffffff;
+      --alt:#F6EDDA;
+    }
+
+    /* SugarSprinkle – lighter, candy-like version of Gym Pop */
+    .theme-sugarSprinkle{
+      --bg:#fff8fd;
+      /* Ensure text is fully readable on pastel backgrounds */
+      --fg:#000000;
+      --muted:#000000;
+      --card:#fbe7ff;
+      --cardA:#ffd7ec;
+      --cardB:#e0f3ff;
+      --cardC:#fff4de;
+      --border:#e7c4f0;
+      --accent:#f48fb1;
+      --accent1:#f48fb1;
+      --accent2:#81d4fa;
+      --accent3:#ffe082;
+      --accent4:#f3e5f5;
+      --accentLo:#f48fb1;
+      --accentHi:#81d4fa;
+      --timerFill:#f48fb1;
+      --timerTrack:#ffffff;
+      --alt:#ffe082;
+    }
+
+    /* AuroraFizz – cooler pastel mix with more blue/teal energy */
+    .theme-auroraFizz{
+      --bg:#f4f8ff;
+      --fg:#000000;
+      --muted:#000000;
+      --card:#e0e7ff;
+      --cardA:#dbeafe;
+      --cardB:#cffafe;
+      --cardC:#f5f3ff;
+      --border:#c4d4ff;
+      --accent:#60a5fa;
+      --accent1:#60a5fa;
+      --accent2:#22d3ee;
+      --accent3:#a855f7;
+      --accent4:#fbbf24;
+      --accentLo:#60a5fa;
+      --accentHi:#22d3ee;
+      --timerFill:#60a5fa;
+      --timerTrack:#ffffff;
+      --alt:#a855f7;
+    }
+
+    /* MarshmallowMode – super soft, low-contrast pastel blocks */
+    .theme-marshmallowMode{
+      --bg:#fffdf7;
+      --fg:#000000;
+      --muted:#000000;
+      --card:#fef3c7;
+      --cardA:#ffe4e6;
+      --cardB:#d9f99d;
+      --cardC:#bae6fd;
+      --border:#fcd34d;
+      --accent:#f9a8d4;
+      --accent1:#f9a8d4;
+      --accent2:#a7f3d0;
+      --accent3:#bfdbfe;
+      --accent4:#fed7aa;
+      --accentLo:#f9a8d4;
+      --accentHi:#a7f3d0;
+      --timerFill:#f9a8d4;
+      --timerTrack:#ffffff;
+      --alt:#bfdbfe;
+    }
+
+    /*
+     * ------------------------------------------------------------
+     * Pastel variants readability & UI overrides
+     *
+     * The following rules ensure that the three Gym Pop inspired
+     * variants (SugarSprinkle, AuroraFizz and MarshmallowMode) are
+     * easy to read and interact with.  Text is set to dark
+     * colours on pastel backgrounds, buttons use the theme’s accent
+     * palette instead of dark fills, progress bars and charts have
+     * light tracks, and input fields adopt white backgrounds with
+     * dark text.  We also lighten ghost buttons (arrows and close
+     * buttons) so they match the theme and remain visible.
+     */
+
+    /* SugarSprinkle – dark text, pastel buttons, light bars */
+    .theme-sugarSprinkle .name{
+      /* Header black for contrast on pastel cards */
+      color:#000000;
+      text-shadow:none;
+      box-shadow:none;
+    }
+    .theme-sugarSprinkle .btn{
+      /* Primary buttons use the main accent colour */
+      background:var(--accent1);
+      color:#000000;
+    }
+    .theme-sugarSprinkle .btn.secondary{
+      /* Secondary buttons use the secondary accent colour */
+      background:var(--accent2);
+      color:#000000;
+    }
+    .theme-sugarSprinkle .btn.ghost{
+      /* Ghost buttons (arrows) adopt dark text and pastel border */
+      color:#000000;
+      border-color:var(--border);
+    }
+    .theme-sugarSprinkle input,
+    .theme-sugarSprinkle select{
+      background:#ffffff;
+      color:#000000;
+      border-color:#b9b9b9;
+    }
+    .theme-sugarSprinkle #growthSvgInline{
+      /* White background for progress chart */
+      background:#ffffff;
+      border-color:var(--border);
+    }
+    .theme-sugarSprinkle #growthSvgInline text{
+      fill:#000000;
+    }
+    .theme-sugarSprinkle .timerBar{
+      background:#ffffff;
+    }
+    .theme-sugarSprinkle .timerFill,
+    .theme-sugarSprinkle #stickyFill{
+      background:var(--accent1);
+    }
+
+    /* AuroraFizz – similar adjustments to SugarSprinkle */
+    .theme-auroraFizz .name{
+      color:#000000;
+      text-shadow:none;
+      box-shadow:none;
+    }
+    .theme-auroraFizz .btn{
+      background:var(--accent1);
+      color:#000000;
+    }
+    .theme-auroraFizz .btn.secondary{
+      background:var(--accent2);
+      color:#000000;
+    }
+    .theme-auroraFizz .btn.ghost{
+      color:#000000;
+      border-color:var(--border);
+    }
+    .theme-auroraFizz input,
+    .theme-auroraFizz select{
+      background:#ffffff;
+      color:#000000;
+      border-color:#b9b9b9;
+    }
+    .theme-auroraFizz #growthSvgInline{
+      background:#ffffff;
+      border-color:var(--border);
+    }
+    .theme-auroraFizz #growthSvgInline text{
+      fill:#000000;
+    }
+    .theme-auroraFizz .timerBar{
+      background:#ffffff;
+    }
+    .theme-auroraFizz .timerFill,
+    .theme-auroraFizz #stickyFill{
+      background:var(--accent1);
+    }
+
+    /* MarshmallowMode – pastel but readable */
+    .theme-marshmallowMode .name{
+      color:#000000;
+      text-shadow:none;
+      box-shadow:none;
+    }
+    .theme-marshmallowMode .btn{
+      background:var(--accent1);
+      color:#000000;
+    }
+    .theme-marshmallowMode .btn.secondary{
+      background:var(--accent2);
+      color:#000000;
+    }
+    .theme-marshmallowMode .btn.ghost{
+      color:#000000;
+      border-color:var(--border);
+    }
+    .theme-marshmallowMode input,
+    .theme-marshmallowMode select{
+      background:#ffffff;
+      color:#000000;
+      border-color:#b9b9b9;
+    }
+    .theme-marshmallowMode #growthSvgInline{
+      background:#ffffff;
+      border-color:var(--border);
+    }
+    .theme-marshmallowMode #growthSvgInline text{
+      fill:#000000;
+    }
+    .theme-marshmallowMode .timerBar{
+      background:#ffffff;
+    }
+    .theme-marshmallowMode .timerFill,
+    .theme-marshmallowMode #stickyFill{
+      background:var(--accent1);
+    }
+
+    /* Pastel variants: set TechMuscleGod logo and streak badges to black text */
+    .theme-sugarSprinkle .name,
+    .theme-auroraFizz .name,
+    .theme-marshmallowMode .name{
+      color:#000000;
+      text-shadow:none;
+      box-shadow:none;
+    }
+    .theme-sugarSprinkle .topbar .badge,
+    .theme-auroraFizz .topbar .badge,
+    .theme-marshmallowMode .topbar .badge{
+      color:#000000;
+    }
+
+    /* Gym Pop – lighten ghost buttons and ensure inputs are white */
+    .theme-gymPop .btn.ghost{
+      color:#000000;
+      border-color:var(--border);
+    }
+
+    /* -----------------------------------------------------------------
+       Additional pastel and Gym Pop UI fixes
+       These rules further refine the theme-specific behaviours so that
+       modal controls (arrows, close buttons, and menu buttons) use
+       light, on-brand colours rather than dark fills.  They come
+       after the main theme definitions so they override any prior
+       settings.  */
+
+    /* Gym Pop: make secondary (Close) buttons pastel, and ghost buttons
+       (arrows) adopt a pastel background and border. */
+    .theme-gymPop .btn.secondary{
+      background:var(--accent2) !important;
+      color:#000000 !important;
+    }
+    .theme-gymPop .btn.ghost{
+      background:var(--accent2) !important;
+      border-color:var(--accent2) !important;
+      color:#000000 !important;
+    }
+
+    /* Pastel variants (SugarSprinkle, AuroraFizz, MarshmallowMode):
+       ensure ghost (arrow) buttons have a pastel background and border
+       instead of being transparent. */
+    .theme-sugarSprinkle .btn.ghost,
+    .theme-auroraFizz .btn.ghost,
+    .theme-marshmallowMode .btn.ghost{
+      background:var(--accent2) !important;
+      border-color:var(--accent2) !important;
+      color:#000000 !important;
+    }
+
+    /* 3-dot menu button: use the theme’s secondary accent colour and
+       round shape for the pastel variants. */
+    .theme-sugarSprinkle #menuBtn,
+    .theme-auroraFizz #menuBtn,
+    .theme-marshmallowMode #menuBtn{
+      background:var(--accent2) !important;
+      color:#000000 !important;
+      border:1px solid var(--accent2) !important;
+      border-radius:999px !important;
+    }
+
+    /* Pastel variants: ensure all text in workout, rest and progress cards is black */
+    .theme-sugarSprinkle .card.card-workout,
+    .theme-sugarSprinkle .card.card-rest,
+    .theme-sugarSprinkle .card.card-progress,
+    .theme-auroraFizz .card.card-workout,
+    .theme-auroraFizz .card.card-rest,
+    .theme-auroraFizz .card.card-progress,
+    .theme-marshmallowMode .card.card-workout,
+    .theme-marshmallowMode .card.card-rest,
+    .theme-marshmallowMode .card.card-progress{
+      color:#000000 !important;
+    }
+    .theme-sugarSprinkle .card.card-workout *,
+    .theme-sugarSprinkle .card.card-rest *,
+    .theme-sugarSprinkle .card.card-progress *,
+    .theme-auroraFizz .card.card-workout *,
+    .theme-auroraFizz .card.card-rest *,
+    .theme-auroraFizz .card.card-progress *,
+    .theme-marshmallowMode .card.card-workout *,
+    .theme-marshmallowMode .card.card-rest *,
+    .theme-marshmallowMode .card.card-progress *{
+      color:#000000 !important;
+    }
+
+    /* Ensure Edit Exercises button blends with pastel variants */
+    .theme-sugarSprinkle #editExercisesBtn{
+      background:var(--cardA, var(--card));
+      color:#000000;
+    }
+    .theme-auroraFizz #editExercisesBtn{
+      background:var(--cardA, var(--card));
+      color:#000000;
+    }
+    .theme-marshmallowMode #editExercisesBtn{
+      background:var(--cardA, var(--card));
+      color:#000000;
+    }
+
+    /* Edit grid alignment */
+    .editHeader{
+      display:grid;
+      grid-template-columns: 2fr 72px 72px 72px;
+      gap:8px;
+      align-items:center;
+    }
+
+    
+    .editNewRow{
+      margin-top:10px;
+    }
+.editRow{margin-bottom:10px}
+    .editRow .editInputs{
+      display:grid;
+      grid-template-columns: 2fr 72px 72px 72px;
+      gap:8px;
+      align-items:center;
+    }
+    .editRow .editInputs .nameInput{width:100%}
+    .editRow .editActions{
+      grid-column:1 / -1;
+      display:flex;
+      justify-content:center;
+      margin-top:6px;
+    }
+    .muted{color:var(--muted);font-size:12px}
+
+    /* Growth inline */
+    #growthSvgInline{width:100%;height:280px;background:#0f0f0f;border:1px solid var(--border);border-radius:12px}
+
+    /* Summary page */
+    #summaryBody h3{margin:4px 0 6px}
+    .sumCard{background:#101010;border:1px solid var(--border);border-radius:12px;padding:12px;margin:10px 0}
+    .sumRow{display:flex;justify-content:space-between;gap:8px}
+  </style>
+
+<style id="tmg-title-hotfix">
+  .name{ font-size:18px !important; text-shadow:none !important; }
+</style>
+
+</head>
+<body>
+  <div class="container theme-blood" id="app">
+    <!-- Top card -->
+    <div class="card">
+      <div class="topbar">
+        <div class="name" id="appName">TechMuscleGod</div>
+        <div class="space"></div>
+        <div class="right row">
+          <div class="badge num">Streak <span id="streakVal">0</span></div>
+          <div class="badge num"><span id="workDur">00:00</span></div>
+          <div class="menu" id="menu">
+          <button id="menuBtn">⋮</button>
+          <div class="dropdown">
+            <button class="item" data-open="appearance">Appearance & Display</button>
+            <button class="item" data-open="sv">Sound & Vibration</button>
+            <button class="item" data-open="rewards">Emoji Rewards</button>
+            <button class="item" data-open="growth">Growth Charts</button>
+            <button class="item" data-open="tips">Tips</button>
+            <button class="item" data-open="export">Export / Import</button>
+          </div>
+        </div>
+        </div>
+      </div>
+
+    <!-- Middle columns -->
+    <div class="columns" id="cols">
+      <!-- Left card -->
+      <div class="col-left">
+        <div class="card card-workout">
+          <div style="text-align:center;font-weight:700;margin-bottom:8px" id="workoutTitle">
+            <button class="btn workout block" id="openWorkouts"><span id="currentDayName"></span></button>
+          </div>
+          <div class="row center" style="margin-bottom:10px">
+            <button class="btn block" id="startFinish">Start Workout</button>
+          </div>
+          <div id="exerciseList"></div>
+          <div class="row" style="margin-top:12px">
+            <button class="btn edit block" id="editExercisesBtn">Edit Exercises</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right card -->
+      <div class="col-right">
+        <div class="card card-rest">
+          <div style="text-align:center;font-weight:700;margin-bottom:8px">Rest Timer</div>
+          <div style="text-align:center;font-size:1.8rem;margin-bottom:8px" id="restLabel" class="num">00:00</div>
+          <div class="timerBar"><div class="timerFill" id="restFill"></div></div>
+          <div style="margin-top:12px;font-weight:600;text-align:center" id="restExName">Exercise</div>
+
+          <div class="row center" style="margin-top:8px">
+            <div class="kv"><span>Target Sets</span><input id="targetSets" class="sm num" type="number"></div>
+            <div class="kv"><span>Target Reps</span><input id="targetReps" class="sm" placeholder="e.g. 10-12"></div>
+          </div>
+          <div class="row center" style="margin-top:8px">
+            <div class="kv"><span>Rest (sec)</span><input id="restSec" class="sm num" type="number"></div>
+            <div class="kv"><span>Sets Remaining</span><input id="setsRemain" class="sm num" type="number"></div>
+          </div>
+          <div class="row center" style="margin-top:8px">
+            <div class="kv"><span>Weight</span><input id="weight" class="sm num" type="number" step="0.1"></div>
+            <div class="kv"><span>Reps</span><input id="reps" class="sm num" type="number"></div>
+          </div>
+
+          <div class="row center" style="margin-top:12px">
+            <button class="btn block" id="restToggle">Start Rest</button>
+            <button class="btn secondary block" id="restReset">Reset</button>
+          </div>
+
+          <div class="row center" style="margin-top:12px">
+            <button class="btn block" id="logSet">Log Set</button>
+          </div>
+          <label style="display:flex;align-items:center;gap:8px;margin-top:8px;justify-content:center">
+            <input type="checkbox" id="autoStart" checked>
+            Auto-start rest after logging set
+          </label>
+        </div>
+        </div>
+      </div>
+
+    <!-- Bottom card (Progress + Inline Growth Charts) -->
+    <div class="card card-progress">
+      <div style="font-weight:700;margin-bottom:8px">Progress</div>
+      <div class="row" style="margin-bottom:6px">
+        <div id="progressText" class="space" style="opacity:.9">Select an exercise and log sets to see last top set and trend.</div>
+      </div>
+      <div class="row" style="align-items:center;margin:6px 0 10px">
+        <label>Metric:</label>
+        <select id="metricInline">
+          <option value="weight">Weight (top)</option>
+          <option value="volume">Volume (sum)</option>
+          <option value="top">Top Set (heaviest)</option>
+          <option value="e1rm">Estimated 1RM</option>
+        </select>
+        <label style="margin-left:8px">Time Period:</label>
+        <select id="chartRange">
+          <option value="7d">7 days</option>
+          <option value="30d">30 days</option>
+          <option value="3m">3 months</option>
+          <option value="6m">6 months</option>
+          <option value="1y">1 year</option>
+          <option value="3y">3 years</option>
+          <option value="all" selected>All</option>
+        </select>
+        <span class="space"></span>
+      </div>
+      <details open style="margin-top:12px">
+        <summary>Progress &amp; Recent entries</summary>
+        <svg id="growthSvgInline"></svg>
+        <div class="row" style="justify-content:flex-end;margin-top:8px">
+          <button class="btn secondary" id="openGrowthModal">Open full Growth Charts</button>
+        </div>
+        <div class="row" style="margin:8px 0">
+          <label style="display:flex;gap:8px;align-items:center">
+            <input type="checkbox" id="selOnly" checked> Selected Only
+          </label>
+          <label style="display:flex;gap:8px;align-items:center">
+            Show Last:
+            <select id="recentLimit"><option>10</option><option>25</option><option>100</option><option>300</option></select>
+          </label>
+        </div>
+        <div id="recentList"></div>
+      </details>
+    </div>
+
+    <!-- Sticky bar -->
+    <div class="stickyBar" id="stickyBar">
+      <div class="stickyInner">
+        <button class="btn ghost" id="prevEx">⟨</button>
+        <button class="btn" id="stickyToggle">Start</button>
+        <button class="btn secondary" id="stickyReset">Reset</button>
+        <button class="btn" id="stickyLog">Log Set</button>
+        <button class="btn ghost" id="nextEx">⟩</button>
+      </div>
+      <div class="stickyMeta">
+        <div id="stickyName">Exercise</div>
+        <div id="stickyTime" class="num">00:00</div>
+      </div>
+      <div class="stickyProgress"><div class="stickyFill" id="stickyFill" style="width:0%"></div></div>
+    </div>
+
+    <div class="burstWrap hidden" id="burstWrap"></div>
+
+    <!-- Dialogs -->
+    <dialog id="dlgWorkouts">
+      <div class="row" style="justify-content:space-between"><h3>Workouts</h3><button class="btn secondary" data-close>Close</button></div>
+      <div class="row" style="margin:8px 0">
+        <input id="newDayName" placeholder="New Day" style="flex:1">
+        <button class="btn" id="addDay">Add Day</button>
+      </div>
+      <div id="daysList"></div>
+    </dialog>
+
+    <dialog id="dlgEdit">
+      <div class="row" style="justify-content:space-between"><h3>Edit Exercises</h3><button class="btn secondary" data-close>Close</button></div>
+      <div class="editHeader muted" style="margin-top:6px">
+        <div>Exercise</div>
+        <div>Rest</div>
+        <div>Sets <span class="muted">(target)</span></div>
+        <div>Reps <span class="muted">(target)</span></div>
+        <div></div><div></div><div></div>
+      </div>
+      <div id="editList" style="margin-top:4px"></div>
+      <div class="card editRow editNewRow">
+        <div class="row editInputs">
+          <input id="newExName" placeholder="New Exercise Name" class="nameInput">
+          <input id="newExRest" placeholder="Rest (sec)" type="number" value="90" class="sm">
+          <input id="newExSets" placeholder="Target sets (e.g., 3)" type="number" value="3" class="sm">
+          <input id="newExReps" placeholder="Target reps (e.g., 8 or 10-12)" value="8" class="sm">
+        </div>
+        <div class="row center editActions" style="margin-top:6px">
+          <button class="btn" id="addEx">Add Exercise</button>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog id="dlgAppearance">
+      <div class="row" style="justify-content:space-between">
+        <h3>Appearance &amp; Display</h3>
+        <button class="btn secondary" data-close>Close</button>
+      </div>
+
+      <div class="vstack" style="margin-top:8px">
+        <div class="kv">
+          <span>Theme</span>
+          <select id="themeSel">
+            <!-- Legacy themes -->
+            <option value="blood">Blood in the Eyes</option>
+            <option value="ocean">Ocean</option>
+            <option value="forest">Forest</option>
+            <option value="amber">Amber</option>
+            <option value="royal">Royal</option>
+            <option value="grape">Grape</option>
+            <option value="rose">Rose</option>
+            <option value="sunset">Sunset</option>
+            <option value="cyber">Cyber</option>
+            <option value="mint">Mint</option>
+            <option value="gold">Gold</option>
+            <option value="steel">Steel</option>
+            <option value="coral">Coral</option>
+            <option value="neon">Neon</option>
+            <option value="plum">Plum</option>
+            <option value="ice">Ice</option>
+            <option value="slate">Slate</option>
+            <option value="lime">Lime</option>
+            <option value="fire">Fire</option>
+            <option value="azure">Azure</option>
+            <option value="pink">Pink</option>
+
+            <!-- Mortal tier -->
+            <option value="hitHard">It ain't about how hard you hit</option>
+            <option value="itsMe">It's a me</option>
+            <option value="bigBoss">Big Boss</option>
+            <option value="whiteWolf">The White Wolf</option>
+            <option value="sector7">Sector 7</option>
+            <option value="gymPop">Gym Pop</option>
+            <option value="terracottaHouse">Terracotta House</option>
+            <option value="sugarSprinkle">SugarSprinkle</option>
+            <option value="auroraFizz">AuroraFizz</option>
+            <option value="marshmallowMode">MarshmallowMode</option>
+            <option value="cottonCandy">Cotton Candy Aura</option>
+            <option value="pastelUprising">Pastel Uprising</option>
+            <option value="minimalGraphite">Minimal Graphite</option>
+            <option value="forestTrail">Forest Trail</option>
+
+            <!-- Ascended tier -->
+            <option value="zWarrior">Z Warrior</option>
+            <option value="shadowNinja">Shadow Ninja</option>
+            <option value="nightCity">Night City</option>
+            <option value="devilTriggered">Devil Triggered</option>
+            <option value="bleedingEdge">Bleeding Edge</option>
+            <option value="heavenlySakura">Heavenly Sakura</option>
+            <option value="oceanTempest">Ocean Tempest</option>
+            <option value="factor7">Factor 7</option>
+            <option value="gottalift">Gotta Lift Them All</option>
+            <option value="talesToBeTold">Tales to Be Told</option>
+            <option value="ironChains">Iron Chains</option>
+            <option value="goldenChampion">Golden Champion</option>
+            <option value="pixelFury">Pixel Fury</option>
+
+            <!-- God tier -->
+            <option value="ultraInstinct">Ultra Instinct</option>
+            <option value="nineTails">Nine-Tails Rampage</option>
+            <option value="eldenEclipse">Elden Eclipse</option>
+            <option value="lastWish">The Last Wish</option>
+            <option value="devilsSymphony">Devil's Symphony</option>
+            <option value="neonOverdrive">Neon Overdrive</option>
+            <option value="godOfTheRing">God of the Ring</option>
+            <option value="bloodMoon">Blood Moon Ritual</option>
+            <option value="celestialBlossom">Celestial Blossom</option>
+            <option value="divineCircuit">Divine Circuit</option>
+          </select>        </div>
+
+        <div class="kv">
+          <span>Text Size</span>
+          <select id="textSize">
+            <option>Original</option>
+            <option>XS</option>
+            <option>S</option>
+            <option>Large</option>
+            <option>XL</option>
+            <option>XXL</option>
+          </select>
+        </div>
+
+        <div class="kv">
+          <span>Card Size</span>
+          <select id="cardSize">
+            <option>Original</option>
+            <option>XS</option>
+            <option>S</option>
+            <option>Large</option>
+            <option>XL</option>
+            <option>XXL</option>
+          </select>
+        </div>
+
+        <div class="kv">
+          <span>Width Mode</span>
+          <select id="widthMode">
+            <option value="even">Even</option>
+            <option value="leftWide">Left Wide</option>
+            <option value="rightWide">Right Wide</option>
+          </select>
+        </div>
+
+        <label style="display:flex;align-items:center;gap:8px">
+          <input type="checkbox" id="swapCols"> Swap columns
+        </label>
+
+        <label style="display:flex;align-items:center;gap:8px">
+          <input type="checkbox" id="stickyOn"> Show sticky timer
+        </label>
+
+        <label style="display:flex;align-items:center;gap:8px">
+          <input type="checkbox" id="gradTimer"> Gradient timer bar
+        </label>
+
+        <label style="display:flex;align-items:center;gap:8px">
+          <input type="checkbox" id="scrollLeftCard"> Scroll left card inside (match height)
+        </label>
+      </div>
+
+      <hr style="border-color:#222;margin:12px 0">
+
+      <div class="vstack">
+        <div>
+          <div class="kv left">
+            <span>UI Font</span>
+            <select id="uiFontSel"></select>
+          </div>
+        </div>
+        <div>
+          <div class="kv left">
+            <span>Heading Font</span>
+            <select id="headFontSel"></select>
+          </div>
+        </div>
+        <div>
+          <div class="kv left">
+            <span>Numbers Font</span>
+            <select id="numFontSel"></select>
+          </div>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog id="dlgSV">
+      <div class="row" style="justify-content:space-between"><h3>Sound & Vibration</h3><button class="btn secondary" data-close>Close</button></div>
+      <label style="display:flex;align-items:center;gap:8px;margin-top:8px;justify-content:center">
+        <input type="checkbox" id="vibOn" checked> Vibration enabled (no sounds in this build)
+      </label>
+    </dialog>
+
+    <dialog id="dlgRewards">
+      <div class="row" style="justify-content:space-between"><h3>Emoji Rewards</h3><button class="btn secondary" data-close>Close</button></div>
+      <div id="emojiChoices" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px"></div>
+    </dialog>
+
+    <dialog id="dlgExport">
+      <div class="row" style="justify-content:space-between"><h3>Export / Import</h3><button class="btn secondary" data-close>Close</button></div>
+      <div class="row" style="margin-top:8px">
+        <button class="btn" id="exportJSON">Export JSON</button>
+        <label class="btn secondary">Import JSON <input id="importJSON" type="file" accept="application/json" style="display:none"></label>
+        <button class="btn secondary" id="downloadHTML">Download HTML Summary</button>
+      </div>
+    </dialog>
+
+    <!-- Growth Charts Modal -->
+    <dialog id="dlgGrowth">
+      <div class="row" style="justify-content:space-between"><h3>Growth Charts</h3><button class="btn secondary" data-close>Close</button></div>
+      <div class="row" style="margin-top:8px">
+        <input id="growthSearch" placeholder="Search exercises..." style="flex:1">
+      </div>
+      <div class="row" style="margin-top:6px;gap:8px;flex-wrap:wrap">
+        <label>Sort:</label>
+        <select id="growthSort">
+          <option value="recency">Recency</option>
+          <option value="growth">Growth</option>
+          <option value="alpha">Alphabetical</option>
+        </select>
+        <label>Metric:</label>
+        <select id="metricSel">
+          <option value="weight">Weight (top)</option>
+          <option value="volume">Volume (sum)</option>
+          <option value="top">Top Set (heaviest)</option>
+          <option value="e1rm">Estimated 1RM</option>
+        </select>
+      </div>
+      <div style="position:relative;margin-top:8px">
+        <svg id="growthSvg"></svg>
+        <div id="growthTip"></div>
+      </div>
+      <!-- Moved LIST BELOW CHART -->
+      <div id="growthList" style="flex:1;max-height:240px;overflow:auto;border:1px solid var(--border);border-radius:12px;margin-top:10px"></div>
+    </dialog>
+    <!-- Growth Point Details Modal -->
+    <dialog id="dlgPointDetails">
+      <div class="row" style="justify-content:space-between;align-items:center">
+        <h3 id="ptTitle">Point details</h3>
+        <button class="btn secondary" data-close>Close</button>
+      </div>
+      <div id="ptBody" style="margin-top:8px"></div>
+    </dialog>
+
+
+    <!-- Tips -->
+    <dialog id="dlgTips">
+      <div class="row" style="justify-content:space-between"><h3>Tips</h3><button class="btn secondary" data-close>Close</button></div>
+      <ul style="margin:8px 0 0 18px">
+        <li>Tap the app name to toggle TechMuscleGod/TechMuscleGoddess.</li>
+        <li>Use Start/Finish to time your workout duration.</li>
+        <li>Log sets in the right card; auto-start rest can be toggled.</li>
+        <li>Use the sticky bar for quick controls anywhere on the page.</li>
+      </ul>
+    </dialog>
+
+    <!-- Summary -->
+    <dialog id="dlgSummary">
+      <div class="row" style="justify-content:space-between">
+        <h3>Workout Summary</h3>
+        <div class="row">
+          <button class="btn secondary" id="shareSummary">Share</button>
+          <button class="btn secondary" id="downloadSummary">Download</button>
+          <button class="btn secondary" data-close>Close</button>
+        </div>
+      </div>
+      <div id="summaryBody" style="margin-top:8px"></div>
+    </dialog>
+  </div>
+
+  <script>
+  (()=>{
+    const $ = (q, el=document)=> el.querySelector(q);
+    const $$ = (q, el=document)=> Array.from(el.querySelectorAll(q));
+    const pad = (n)=> String(n).padStart(2,'0');
+    const nowISO = ()=> new Date().toISOString();
+    const uid = ()=> Math.random().toString(36).slice(2)+Date.now().toString(36);
+    const view = {
+      topbar: {
+        name: $('#appName'),
+        streakValue: $('#streakVal'),
+        workDuration: $('#workDur'),
+        menuButton: $('#menuBtn')
+      },
+      rest: {
+        label: $('#restLabel'),
+        fill: $('#restFill'),
+        exerciseName: $('#restExName'),
+        targetSets: $('#targetSets'),
+        targetReps: $('#targetReps'),
+        restSeconds: $('#restSec'),
+        setsRemain: $('#setsRemain'),
+        weight: $('#weight'),
+        reps: $('#reps'),
+        toggleButton: $('#restToggle'),
+        resetButton: $('#restReset')
+      },
+      growth: {
+        svgInline: $('#growthSvgInline'),
+        inlineMetric: $('#metricInline'),
+        inlineRange: $('#chartRange'),
+        recentList: $('#recentList')
+      },
+      dialogs: {
+        workouts: $('#dlgWorkouts'),
+        editExercises: $('#dlgEdit'),
+        appearance: $('#dlgAppearance'),
+        soundVibration: $('#dlgSV'),
+        rewards: $('#dlgRewards'),
+        exportImport: $('#dlgExport'),
+        growth: $('#dlgGrowth'),
+        pointDetails: $('#dlgPointDetails'),
+        tips: $('#dlgTips'),
+        summary: $('#dlgSummary')
+      }
+    };
+
+
+    const STORE_KEY = 'TMG_single_v8';
+    const DEF_EMOJIS = "💪 🦵 🦶 👏 👑 🏅 🥇 🏆 🥊 🥤 🍼 🥛 🍎 🍑 🍆 🌶️ 🍌 🥩 🥗 🥜 🥒 💦 😍 🥰 🤩 😅 🥵 😂 🤯 😡 🥶 😱 🫢 😬 😹 🤪 😜 🙃 😏 🙄 😎 💀 🤡 🥸 😈 🔥 ⚡ ✨ 🎶 🏐 🏀 🏈 ⚽ 🎾 🏸 🏹 ⛹️‍♂️ ⛹️‍♀️ 🤺 🛹 🛼 🏔️ 🧗‍♀️ 🚣 🧴 👀 👅 💋 👠 💅 🐒 🦆 💃 🕺 🥂 🍸 🍷 🏋️‍♂️ 🏋️‍♀️ 🏃‍♂️ 🏃‍♀️ 🚴‍♂️ 🚴‍♀️ 🏊 🤸‍♂️ 🤸‍♀️ 🧘‍♂️ 🧘‍♀️".split(/\s+/);
+    const METRICS = [
+      { id: 'weight', label: 'Weight (top)' },
+      { id: 'volume', label: 'Volume (sum)' },
+      { id: 'top',    label: 'Top Set (heaviest)' },
+      { id: 'e1rm',   label: 'Estimated 1RM' },
+    ];
+
+    const CHART_RANGES = [
+      { id: '7d',   label: '7 days' },
+      { id: '30d',  label: '30 days' },
+      { id: '3m',   label: '3 months' },
+      { id: '6m',   label: '6 months' },
+      { id: '1y',   label: '1 year' },
+      { id: '3y',   label: '3 years' },
+      { id: 'all',  label: 'All' },
+    ];
+    
+const THEMES = [
+  {
+    id: 'hitHard',
+    name: "It ain't about how hard you hit",
+    tier: 'mortal',
+    colors: {
+      bg:    '#050509',
+      bg2:   '#0a0c12',
+      cardA: '#14161f',
+      cardB: '#17120f',
+      cardC: '#101116',
+      fg:    '#f5f5f7',
+      muted: '#9ea2aa',
+      border: '#2b2f3a',
+      accent1: '#ff3b30',
+      accent2: '#ffd60a',
+      accent3: '#0a84ff',
+      accent4: '#ffffff',
+      accentLo: '#ff3b30',
+      accentHi: '#ffd60a',
+      alt:      '#5f6368'
+    },
+    fx: { frame: 'none', aura: false }
+  },
+  {
+    id: 'itsMe',
+    name: "It's a me",
+    tier: 'mortal',
+    colors: {},
+    fx: { frame: 'none', aura: false }
+  },
+  {
+    id: 'bigBoss',
+    name: 'Big Boss',
+    tier: 'mortal',
+    colors: {},
+    fx: { frame: 'none', aura: false }
+  },
+  {
+    id: 'whiteWolf',
+    name: 'The White Wolf',
+    tier: 'mortal',
+    colors: {},
+    fx: { frame: 'none', aura: false }
+  },
+  {
+    id: 'sector7',
+    name: 'Sector 7',
+    tier: 'mortal',
+    colors: {},
+    fx: { frame: 'none', aura: false }
+  },
+  {
+    id: 'gymPop',
+    name: 'Gym Pop',
+    tier: 'mortal',
+    colors: {},
+    fx: { frame: 'none', aura: false }
+  },
+  {
+    id: 'terracottaHouse',
+    name: 'Terracotta House',
+    tier: 'mortal',
+    colors: {},
+    fx: { frame: 'none', aura: false }
+  },
+
+  {
+    id: 'sugarSprinkle',
+    name: 'SugarSprinkle',
+    tier: 'mortal',
+    colors: {},
+    fx: { frame: 'none', aura: false }
+  },
+  {
+    id: 'auroraFizz',
+    name: 'AuroraFizz',
+    tier: 'mortal',
+    colors: {},
+    fx: { frame: 'none', aura: false }
+  },
+  {
+    id: 'marshmallowMode',
+    name: 'MarshmallowMode',
+    tier: 'mortal',
+    colors: {},
+    fx: { frame: 'none', aura: false }
+  },
+  {
+    id: 'cottonCandy',
+    name: 'Cotton Candy Aura',
+    tier: 'mortal',
+    colors: {},
+    fx: { frame: 'none', aura: false }
+  },
+  {
+    id: 'pastelUprising',
+    name: 'Pastel Uprising',
+    tier: 'mortal',
+    colors: {},
+    fx: { frame: 'none', aura: false }
+  },
+  {
+    id: 'minimalGraphite',
+    name: 'Minimal Graphite',
+    tier: 'mortal',
+    colors: {},
+    fx: { frame: 'none', aura: false }
+  },
+  {
+    id: 'forestTrail',
+    name: 'Forest Trail',
+    tier: 'mortal',
+    colors: {},
+    fx: { frame: 'none', aura: false }
+  },
+
+  {
+    id: 'zWarrior',
+    name: 'Z Warrior',
+    tier: 'ascended',
+    colors: {
+      bg:    '#050716',
+      bg2:   '#070a1e',
+      cardA: '#0b1020',
+      cardB: '#071923',
+      cardC: '#0a0f1a',
+      fg:    '#f8f9ff',
+      muted: '#a5b4fc',
+      border: '#1f2937',
+      accent1: '#3b82f6',
+      accent2: '#22d3ee',
+      accent3: '#facc15',
+      accent4: '#ffffff',
+      accentLo: '#3b82f6',
+      accentHi: '#22d3ee',
+      alt:      '#f97316'
+    },
+    fx: { frame: 'energy', aura: true }
+  },
+  {
+    id: 'shadowNinja',
+    name: 'Shadow Ninja',
+    tier: 'ascended',
+    colors: {},
+    fx: { frame: 'none', aura: false }
+  },
+  {
+    id: 'nightCity',
+    name: 'Night City',
+    tier: 'ascended',
+    colors: {},
+    fx: { frame: 'none', aura: false }
+  },
+  {
+    id: 'devilTriggered',
+    name: 'Devil Triggered',
+    tier: 'ascended',
+    colors: {},
+    fx: { frame: 'none', aura: false }
+  },
+  {
+    id: 'bleedingEdge',
+    name: 'Bleeding Edge',
+    tier: 'ascended',
+    colors: {},
+    fx: { frame: 'none', aura: false }
+  },
+  {
+    id: 'heavenlySakura',
+    name: 'Heavenly Sakura',
+    tier: 'ascended',
+    colors: {},
+    fx: { frame: 'none', aura: false }
+  },
+  {
+    id: 'oceanTempest',
+    name: 'Ocean Tempest',
+    tier: 'ascended',
+    colors: {},
+    fx: { frame: 'none', aura: false }
+  },
+  {
+    id: 'ironChains',
+    name: 'Iron Chains',
+    tier: 'ascended',
+    colors: {},
+    fx: { frame: 'none', aura: false }
+  },
+  {
+    id: 'goldenChampion',
+    name: 'Golden Champion',
+    tier: 'ascended',
+    colors: {},
+    fx: { frame: 'none', aura: false }
+  },
+  {
+    id: 'pixelFury',
+    name: 'Pixel Fury',
+    tier: 'ascended',
+    colors: {},
+    fx: { frame: 'none', aura: false }
+  },
+
+  /* Factor 7: premium theme based on classic JRPG aesthetics */
+  {
+    id: 'factor7',
+    name: 'Factor 7',
+    tier: 'ascended',
+    colors: {},
+    fx: { frame: 'none', aura: false }
+  },
+
+  /* Gotta Lift Them All – Game Boy inspired theme */
+  {
+    id: 'gottalift',
+    name: 'Gotta Lift Them All',
+    tier: 'ascended',
+    colors: {},
+    fx: { frame: 'none', aura: false }
+  },
+
+  /* Tales to Be Told – Undertale inspired premium theme */
+  {
+    id: 'talesToBeTold',
+    name: 'Tales to Be Told',
+    tier: 'ascended',
+    colors: {},
+    fx: { frame: 'none', aura: false }
+  },
+
+  {
+    id: 'ultraInstinct',
+    name: 'Ultra Instinct',
+    tier: 'god',
+    colors: {
+      bg:    '#020410',
+      bg2:   '#05071a',
+      cardA: '#070a20',
+      cardB: '#080b24',
+      cardC: '#090c26',
+      fg:    '#f9fafb',
+      muted: '#c7d2fe',
+      border: '#111827',
+      accent1: '#e5e7eb',
+      accent2: '#60a5fa',
+      accent3: '#a855f7',
+      accent4: '#ffffff',
+      accentLo: '#60a5fa',
+      accentHi: '#a855f7',
+      alt:      '#22d3ee'
+    },
+    fx: { frame: 'aura', aura: true }
+  },
+  {
+    id: 'nineTails',
+    name: 'Nine-Tails Rampage',
+    tier: 'god',
+    colors: {},
+    fx: { frame: 'fire', aura: true }
+  },
+  {
+    id: 'eldenEclipse',
+    name: 'Elden Eclipse',
+    tier: 'god',
+    colors: {},
+    fx: { frame: 'aura', aura: true }
+  },
+  {
+    id: 'lastWish',
+    name: 'The Last Wish',
+    tier: 'god',
+    colors: {},
+    fx: { frame: 'aura', aura: true }
+  },
+  {
+    id: 'devilsSymphony',
+    name: "Devil's Symphony",
+    tier: 'god',
+    colors: {},
+    fx: { frame: 'energy', aura: true }
+  },
+  {
+    id: 'neonOverdrive',
+    name: 'Neon Overdrive',
+    tier: 'god',
+    colors: {},
+    fx: { frame: 'energy', aura: true }
+  },
+  {
+    id: 'godOfTheRing',
+    name: 'God of the Ring',
+    tier: 'god',
+    colors: {},
+    fx: { frame: 'none', aura: true }
+  },
+  {
+    id: 'bloodMoon',
+    name: 'Blood Moon Ritual',
+    tier: 'god',
+    colors: {},
+    fx: { frame: 'aura', aura: true }
+  },
+  {
+    id: 'celestialBlossom',
+    name: 'Celestial Blossom',
+    tier: 'god',
+    colors: {},
+    fx: { frame: 'aura', aura: true }
+  },
+  {
+    id: 'divineCircuit',
+    name: 'Divine Circuit',
+    tier: 'god',
+    colors: {},
+    fx: { frame: 'energy', aura: true }
+  }
+];
+
+
+
+
+    // Fonts registry (system-first; embedded fonts would be added via @font-face if available)
+    
+    function getThemeDef(id){
+      return THEMES.find(t => t.id === id) || THEMES[0];
+    }
+const FONT_STACKS = [
+      {id:'8bitoperator', label:'8-Bit Operator JVE', css:'8bitoperator, "Comic Sans MS", "Comic Sans", sans-serif'},
+      {id:'comic-sans', label:'Comic Sans', css:'"Comic Sans MS", "Comic Sans", cursive'},
+      {id:'poppins', label:'Poppins', css:'Poppins,Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif'},
+      {id:'aptos', label:'Aptos (if installed)', css:'Aptos,Segoe UI,Inter,system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif'},
+      {id:'times', label:'Times New Roman', css:'"Times New Roman",Times,serif'},
+      {id:'arial', label:'Arial', css:'Arial,Helvetica,sans-serif'},
+      {id:'cavolini', label:'Cavolini (if installed)', css:'Cavolini,Calibri,Arial,Helvetica,sans-serif'},
+      {id:'papyrus', label:'Papyrus (if installed)', css:'Papyrus,Segoe Script,Georgia,serif'},
+      {id:'century-gothic', label:'Century Gothic (if installed)', css:'"Century Gothic",Arial,Helvetica,sans-serif'},
+      {id:'georgia', label:'Georgia', css:'Georgia,Times,serif'},
+      {id:'lucida-hand', label:'Lucida Handwriting (if installed)', css:'"Lucida Handwriting","Segoe Script",Georgia,serif'},
+      {id:'baguet-script', label:'Baguet Script (if installed)', css:'"Baguet Script","Segoe Script",Georgia,serif'},
+      {id:'inter', label:'Inter', css:'Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif'},
+      {id:'space-grotesk', label:'Space Grotesk', css:'"Space Grotesk",Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif'},
+      {id:'system', label:'System UI', css:'system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif'},
+      {id:'manrope', label:'Manrope', css:'Manrope,Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif'},
+      {id:'source-sans-3', label:'Source Sans 3', css:'"Source Sans 3",Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif'},
+      {id:'playfair', label:'Playfair Display', css:'"Playfair Display",Georgia,Times,serif'},
+      {id:'segoe', label:'Segoe UI', css:'"Segoe UI",Inter,system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif'},
+      {id:'roboto', label:'Roboto', css:'Roboto,Inter,system-ui,-apple-system,Segoe UI,Helvetica,Arial,sans-serif'},
+      {id:'open-sans', label:'Open Sans', css:'"Open Sans",Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif'},
+      {id:'lato', label:'Lato', css:'Lato,Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif'},
+      {id:'montserrat', label:'Montserrat', css:'Montserrat,Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif'},
+      {id:'work-sans', label:'Work Sans', css:'"Work Sans",Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif'},
+      {id:'outfit', label:'Outfit', css:'Outfit,Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif'},
+      {id:'urbanist', label:'Urbanist', css:'Urbanist,Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif'},
+      {id:'plus-jakarta', label:'Plus Jakarta Sans', css:'"Plus Jakarta Sans",Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif'},
+      {id:'figtree', label:'Figtree', css:'Figtree,Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif'},
+      {id:'nunito', label:'Nunito', css:'Nunito,Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif'},
+      {id:'rubik', label:'Rubik', css:'Rubik,Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif'},
+      {id:'ibm-plex-sans', label:'IBM Plex Sans', css:'"IBM Plex Sans",Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif'},
+      {id:'archivo', label:'Archivo', css:'Archivo,Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif'},
+      {id:'pt-sans', label:'PT Sans', css:'"PT Sans",Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif'}
+    ];
+
+    
+function load(){
+      try{ const raw = localStorage.getItem(STORE_KEY); if (raw) return JSON.parse(raw); }catch{}
+      const idA = uid(), idB = uid(), idC = uid();
+      return {
+        name: 'TechMuscleGod',
+        theme: 'blood',
+        textSize: 'Original', cardSize:'Original', widthMode:'even', swap:false,
+        chartMetric:'weight', chartRange:'all',
+        stickyOn: true,
+        timerGradient: false,
+        scrollLeftCard: false,
+        uiFont:'system', headFont:'poppins', numFont:'space-grotesk',
+        dayStartHour: 4, vibOn: true,
+        rewardEmojis: ['💪','🔥','✨','🦵','👏','🏅'],
+        program: { days: [
+          { id:idA, name:'Day 1 – Full Body (Squat + Horizontal)', order:1, exercises:[
+            { id:uid(), name:'Back Squat', rest:120, sets:3, reps:'6-8' },
+            { id:uid(), name:'Flat Barbell or DB Bench Press', rest:120, sets:3, reps:'6-8' },
+            { id:uid(), name:'Chest-Supported Row', rest:120, sets:3, reps:'8-10' },
+            { id:uid(), name:'Romanian Deadlift', rest:120, sets:2, reps:'8-10' },
+            { id:uid(), name:'Face Pull (rope cable)', rest:60, sets:3, reps:'12-15' },
+            { id:uid(), name:'Hanging Leg Raise / Ab-Wheel / Plank', rest:60, sets:3, reps:'8-12' },
+          ]},
+          { id:idB, name:'Day 2 – Full Body (Hinge + Vertical)', order:2, exercises:[
+            { id:uid(), name:'Trap-Bar Deadlift or Hip Thrust', rest:150, sets:3, reps:'5-8' },
+            { id:uid(), name:'Pull-Up / Chin-Up / Lat Pulldown', rest:120, sets:3, reps:'6-10' },
+            { id:uid(), name:'Incline Dumbbell Press', rest:90, sets:3, reps:'8-10' },
+            { id:uid(), name:'Seated Cable Row or Chest-Supported Row', rest:90, sets:3, reps:'8-12' },
+            { id:uid(), name:'Body Dips', rest:120, sets:3, reps:'6-10' },
+            { id:uid(), name:'Side Plank + Pallof Press', rest:60, sets:3, reps:'8-12' },
+          ]},
+          { id:idC, name:'Day 3 – Full Body (Unilateral + Shoulders)', order:3, exercises:[
+            { id:uid(), name:'Bulgarian Split Squat', rest:120, sets:3, reps:'8-10/leg' },
+            { id:uid(), name:'Leg Curl', rest:90, sets:3, reps:'8-12' },
+            { id:uid(), name:'Calf Raise', rest:60, sets:3, reps:'10-15' },
+            { id:uid(), name:'Dumbbell Bench Press', rest:90, sets:3, reps:'8-12' },
+            { id:uid(), name:'Chest-Supported or Machine Row', rest:90, sets:3, reps:'8-12' },
+            { id:uid(), name:'Dumbbell Lateral Raise', rest:60, sets:3, reps:'10-15' },
+            { id:uid(), name:'Biceps Curl (EZ-bar or DB)', rest:60, sets:3, reps:'8-12' },
+          ]},
+        ]},
+        selectedDay: idA,
+        selectedEx: null,
+        activeSessionId: null,
+        sessions: [],
+        completed: {},
+        lastByName: {},
+        setsRemainByEx: {}
+      };
+    }
+
+    let state = load();
+    if (state.scrollLeftCard == null) state.scrollLeftCard = false;
+    if (!state.chartMetric) state.chartMetric = 'weight';
+    if (!state.chartRange) state.chartRange = 'all';
+    function save(){
+      try{
+        localStorage.setItem(STORE_KEY, JSON.stringify(state));
+      }catch(e){}
+    }
+    function escapeHTML(str){
+      if (str == null) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    let saveTimer = null;
+    function scheduleSave(){
+      if (saveTimer !== null) window.clearTimeout(saveTimer);
+      saveTimer = window.setTimeout(()=>{
+        saveTimer = null;
+        save();
+      }, 250);
+    }
+
+    function dateKeyWithStart(iso, startHour){
+      const d = new Date(iso);
+      const adj = new Date(d.getTime() - startHour*3600*1000);
+      return adj.toISOString().slice(0,10);
+    }
+    function computeStreak(sessions, startHour){
+      const keys = new Set(sessions.map(s=> dateKeyWithStart(s.startedAt, startHour)));
+      let streak=0, cursor = new Date();
+      while(true){
+        const k = dateKeyWithStart(cursor.toISOString(), startHour);
+        if (keys.has(k)){ streak++; cursor.setDate(cursor.getDate()-1); } else break;
+      }
+      return streak;
+    }
+
+    // ---------- Emoji classifier ----------
+    function scoreCategory(name, patterns){
+      let score=0; for(const [re,w] of patterns){ if(re.test(name)) score+=w; } return score;
+    }
+    const LOWER_PATTERNS = [
+      [/\bleg\s+press\b/i,5],[/\bleg\s+curl(s)?\b/i,5],[/\bhamstring\s+curl(s)?\b/i,5],[/\bnordic\s+curl(s)?\b/i,5],
+      [/\bleg\s+extension(s)?\b/i,5],[/\b(seated|standing)\s+calf\s+raise(s)?\b/i,5],[/\bcalf\s+raise(s)?\b/i,4],
+      [/\b(glute|hip)\s+thrust(s)?\b/i,5],[/\bglute\s+bridge(s)?\b/i,4],
+      [/\b(front|back|goblet|hack)\s+squat(s)?\b/i,5],[/\b(split\s+)?squat(s)?\b/i,4],[/\blunge(s)?\b/i,4],[/\bstep-?up(s)?\b/i,3],
+      [/\bromanian\s+deadlift(s)?\b/i,5],[/\brdl\b/i,4],[/\bdeadlift(s)?\b/i,5],[/\bgood\s+morning(s)?\b/i,4],
+      [/\b(adductor|abductor)\b/i,3],
+      [/\bleg(s)?\b/i,2],[/\bquad(s)?\b/i,2],[/\bhamstring(s)?\b/i,2],[/\b(?:calf|calves)\b/i,2],[/\bglute(s)?\b/i,2],
+    ];
+    const UPPER_PATTERNS = [
+      [/\bbench\s+press\b/i,5],[/\b(?:incline|decline|flat)\s+(?:bench\s+)?press\b/i,5],
+      [/\b(?:overhead|shoulder|military)\s+press\b/i,5],[/\bohp\b/i,4],[/\bchest\s+press\b/i,4],
+      [/\b(?:bent-?over|barbell|dumbbell|machine)\s+row(s)?\b/i,4],[/\brow(s)?\b/i,3],
+      [/\bpull-?down(s)?\b/i,4],[/\bpull-?up(s)?\b/i,4],[/\bchin-?up(s)?\b/i,4],
+      [/\b(?:lateral|front|rear)\s+raise(s)?\b/i,4],[/\b(?:fly|flies)\b/i,3],
+      [/\bbiceps?\s+curl(s)?\b/i,5],[/\b(?:preacher|hammer|ez[-\s]?bar?)\s*curl(s)?\b/i,4],
+      [/\btriceps?\b/i,3],[/\b(?:triceps?\s+extension|skull\s*crusher(s)?)\b/i,5],[/\bpush\s*down(s)?\b/i,4],
+    ];
+    function classifyExercise(name){
+      const n = name.toLowerCase();
+      const lower = scoreCategory(n, LOWER_PATTERNS);
+      const upper = scoreCategory(n, UPPER_PATTERNS);
+      if (lower>upper && lower>0) return 'lower';
+      if (upper>lower && upper>0) return 'upper';
+      if (lower===upper && lower>0){
+        const lowStrong = scoreCategory(n, LOWER_PATTERNS.filter(([re,w])=>w>=5));
+        const upStrong  = scoreCategory(n, UPPER_PATTERNS.filter(([re,w])=>w>=5));
+        if (lowStrong>upStrong) return 'lower';
+        if (upStrong>lowStrong) return 'upper';
+      }
+      return 'other';
+    }
+    function pickEmojis(exName, isPR){
+      const chosen = state.rewardEmojis?.length ? state.rewardEmojis : ['💪','🔥','✨','🦵','👏','🏅'];
+      const cat = classifyExercise(exName||'');
+      const filtered = chosen.filter(e=> !(e==='🦵'&&cat==='upper') && !(e==='💪'&&cat==='lower'));
+      const pool = filtered.length ? filtered : chosen;
+      if (!pool.length) return [];
+
+      function randFrom(arr){
+        return arr[Math.floor(Math.random()*arr.length)];
+      }
+
+      if (isPR){
+        const out = [];
+        for (let i=0;i<3;i++) out.push(randFrom(pool));
+        return out;
+      }
+      return [randFrom(pool)];
+    }
+    function burst(emojis){
+      const wrap = $('#burstWrap');
+      wrap.innerHTML = `<div class="burst">${emojis.map(e=>`<span>${e}</span>`).join('')}</div>`;
+      wrap.classList.remove('hidden');
+      setTimeout(()=> wrap.classList.add('hidden'), 1200);
+    }
+
+    // ---------- Title & menu ----------
+    $('#appName').onclick = ()=>{
+      state.name = state.name==='TechMuscleGod' ? 'TechMuscleGoddess' : 'TechMuscleGod';
+      $('#appName').textContent = state.name; scheduleSave();
+    };
+    $('#appName').textContent = state.name;
+
+    const menu = $('#menu');
+    $('#menuBtn').onclick = ()=> menu.classList.toggle('open');
+    document.addEventListener('click',(e)=>{ if (!menu.contains(e.target)) menu.classList.remove('open'); });
+    $$('.dropdown .item', menu).forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const key = btn.dataset.open; menu.classList.remove('open');
+        if (key==='appearance') { syncAppearanceControls(); $('#dlgAppearance').showModal(); }
+        if (key==='sv') $('#dlgSV').showModal();
+        if (key==='rewards') { renderRewards(); $('#dlgRewards').showModal(); }
+        if (key==='export') $('#dlgExport').showModal();
+        if (key==='growth') { openGrowth(); }
+        if (key==='tips') $('#dlgTips').showModal();
+      });
+    });
+    // Close dialog by clicking outside content
+    $$('dialog').forEach(dlg=>{
+      dlg.addEventListener('mousedown', (e)=>{
+        const rect = dlg.getBoundingClientRect();
+        const inBox = e.clientX>=rect.left && e.clientX<=rect.right && e.clientY>=rect.top && e.clientY<=rect.bottom;
+        if (!inBox) dlg.close();
+      });
+    });
+    $$('dialog [data-close]').forEach(b=> b.addEventListener('click', e=> e.target.closest('dialog').close()));
+
+    // ---------- Appearance (theme, sizes, columns) ----------
+    function applyTheme(){
+      const root = $('#app');
+      root.className = 'container ' + (state.timerGradient ? 'gradTimer ' : '') + (state.scrollLeftCard ? 'scrollLeftCard ' : '') + 'theme-' + (state.theme || 'blood');
+      const map = { XS:'12px', S:'13px', Original:'14px', Large:'16px', XL:'18px', XXL:'20px' };
+      document.documentElement.style.setProperty('--body', map[state.textSize]||'14px');
+      const pmap = { XS:'8px', S:'10px', Original:'14px', Large:'16px', XL:'18px', XXL:'22px' };
+      document.documentElement.style.setProperty('--cardPad', pmap[state.cardSize]||'14px');
+      const cols = state.widthMode==='leftWide' ? ['1.35fr','0.65fr'] : state.widthMode==='rightWide' ? ['0.65fr','1.35fr'] : ['1fr','1fr'];
+      document.documentElement.style.setProperty('--colL', cols[0]);
+      document.documentElement.style.setProperty('--colR', cols[1]);
+      const colsEl = $('#cols'); colsEl.classList.toggle('swap', !!state.swap);
+      applyFonts();
+      applySticky();
+      applyScrollLeftCard();
+    }
+    function applyFonts(){
+      const getCss = (id)=> (FONT_STACKS.find(f=>f.id===id)||FONT_STACKS[0]).css;
+      document.documentElement.style.setProperty('--font-ui', getCss(state.uiFont||'system'));
+      document.documentElement.style.setProperty('--font-head', getCss(state.headFont||'poppins'));
+      document.documentElement.style.setProperty('--font-num', getCss(state.numFont||'space-grotesk'));
+      // Update previews
+      const _u=$('#uiPreview'); if(_u) _u.style.fontFamily = getCss(state.uiFont||'system');
+      const _h=$('#headPreview'); if(_h) _h.style.fontFamily = getCss(state.headFont||'poppins');
+      const _n=$('#numPreview'); if(_n) _n.style.fontFamily = getCss(state.numFont||'space-grotesk');
+    }
+    function syncAppearanceControls(){
+      $('#themeSel').value = state.theme || 'blood';
+      $('#textSize').value = state.textSize;
+      $('#cardSize').value = state.cardSize;
+      $('#widthMode').value = state.widthMode;
+      $('#swapCols').checked = !!state.swap;
+      $('#stickyOn').checked = !!state.stickyOn;
+      $('#gradTimer').checked = !!state.timerGradient;
+      $('#scrollLeftCard').checked = !!state.scrollLeftCard;
+      // populate font selects (once)
+      function ensureOpts(sel){
+        if (sel.dataset.ready) return;
+        sel.innerHTML = FONT_STACKS.map(f=>`<option value="${f.id}">${f.label}</option>`).join('');
+        sel.dataset.ready = '1';
+      }
+      ensureOpts($('#uiFontSel')); ensureOpts($('#headFontSel')); ensureOpts($('#numFontSel'));
+      $('#uiFontSel').value = state.uiFont||'system';
+      $('#headFontSel').value = state.headFont||'poppins';
+      $('#numFontSel').value = state.numFont||'space-grotesk';
+      applyFonts();
+    }
+    function applySticky(){
+      const bar = $('#stickyBar');
+      bar.style.display = state.stickyOn ? '' : 'none';
+    }
+
+    let leftScrollHintsAttached = false;
+    function updateLeftScrollHints(card){
+      if (!card) return;
+      const canScroll = card.scrollHeight > card.clientHeight + 1;
+      card.classList.toggle('card-scrollable', !!canScroll);
+      if (!canScroll){
+        card.classList.remove('has-scroll-top','has-scroll-bottom');
+        return;
+      }
+      const atTop = card.scrollTop <= 0;
+      const atBottom = card.scrollTop + card.clientHeight >= card.scrollHeight - 1;
+      card.classList.toggle('has-scroll-top', !atTop);
+      card.classList.toggle('has-scroll-bottom', !atBottom);
+    }
+
+    function applyScrollLeftCard(){
+      const colsEl = $('#cols');
+      const leftCard = $('#cols .col-left .card');
+      const rightCard = $('#cols .col-right .card');
+      if (!colsEl || !leftCard || !rightCard) return;
+
+      // Reset classes and inline styles
+      colsEl.classList.remove('mode-scroll-left','mode-match-left');
+      leftCard.style.maxHeight = '';
+      leftCard.style.height = '';
+      leftCard.style.overflowY = '';
+      leftCard.classList.remove('card-scrollable','has-scroll-top','has-scroll-bottom');
+
+      if (!state || !state.scrollLeftCard){
+        // Default mode: both cards stretch to match tallest column (right matches left)
+        colsEl.classList.add('mode-match-left');
+        return;
+      }
+
+      // Scroll-left mode: right card uses natural height; left matches that height and scrolls inside.
+      colsEl.classList.add('mode-scroll-left');
+
+      // Wait for layout so measurements are accurate
+      window.requestAnimationFrame(()=>{
+        const rh = rightCard.offsetHeight || 0;
+        if (!rh) return;
+
+        leftCard.style.height = rh + 'px';
+        leftCard.style.overflowY = 'auto';
+
+        if (!leftScrollHintsAttached){
+          leftCard.addEventListener('scroll', ()=> updateLeftScrollHints(leftCard));
+          leftScrollHintsAttached = true;
+        }
+        updateLeftScrollHints(leftCard);
+      });
+    }
+$('#themeSel').onchange = e=>{ state.theme = e.target.value; applyTheme(); renderExercises(); scheduleSave(); };
+    $('#textSize').onchange = e=>{ state.textSize = e.target.value; applyTheme(); scheduleSave(); };
+    $('#cardSize').onchange = e=>{ state.cardSize = e.target.value; applyTheme(); scheduleSave(); };
+    $('#widthMode').onchange = e=>{ state.widthMode = e.target.value; applyTheme(); scheduleSave(); };
+    $('#swapCols').onchange = e=>{ state.swap = e.target.checked; applyTheme(); scheduleSave(); };
+    $('#stickyOn').onchange = e=>{ state.stickyOn = e.target.checked; applySticky(); scheduleSave(); };
+    $('#gradTimer').onchange = e=>{ state.timerGradient = e.target.checked; applyTheme(); scheduleSave(); };
+    $('#scrollLeftCard').onchange = e=>{ state.scrollLeftCard = e.target.checked; applyTheme(); scheduleSave(); };
+    // Font select handlers
+    $('#uiFontSel')?.addEventListener('change', e=>{ state.uiFont = e.target.value; applyFonts(); scheduleSave(); });
+    $('#headFontSel')?.addEventListener('change', e=>{ state.headFont = e.target.value; applyFonts(); scheduleSave(); });
+    $('#numFontSel')?.addEventListener('change', e=>{ state.numFont = e.target.value; applyFonts(); scheduleSave(); });
+
+    applyTheme();
+
+    // ---------- Program & Exercises ----------
+    function allDays(){ return state.program.days.sort((a,b)=>a.order-b.order); }
+    function currentDay(){ return allDays().find(d=>d.id===state.selectedDay) || allDays()[0]; }
+    function currentEx(){
+      const d = currentDay(); if (!d) return null;
+      return d.exercises.find(e=>e.id===state.selectedEx) || d.exercises[0] || null;
+    }
+
+    $('#openWorkouts').onclick = ()=>{ renderDaysList(); $('#dlgWorkouts').showModal(); };
+
+    $('#addDay').onclick = ()=>{
+      const name = $('#newDayName').value.trim() || 'New Day';
+      const order = (allDays().at(-1)?.order||0)+1;
+      state.program.days.push({ id:uid(), name, order, exercises:[] });
+      $('#newDayName').value = 'New Day';
+      renderDaysList(); save();
+    };
+
+    function renderDaysList(){
+      const box = $('#daysList'); box.innerHTML='';
+      allDays().forEach((d, i)=>{
+        const row = document.createElement('div'); row.className='card';
+        row.innerHTML = `
+          <div class="row" style="margin-bottom:6px">
+            <input value="${escapeHTML(d.name)}" data-id="${d.id}" class="dayName" style="flex:1">
+          </div>
+          <div class="row center">
+            <button class="btn secondary" data-up="${d.id}">↑</button>
+            <button class="btn secondary" data-down="${d.id}">↓</button>
+            <button class="btn workout" data-sel="${d.id}">Select</button>
+            <button class="btn edit" data-del="${d.id}">Delete</button>
+          </div>
+          <div class="confirm hidden mt8 center-text" data-cid="${d.id}">
+            <div class="mb6">This will delete this workout day, are you sure?</div>
+            <div class="row center">
+              <button class="btn secondary" data-yes="${d.id}">Yes</button>
+              <button class="btn secondary" data-no="${d.id}">No</button>
+            </div>
+          </div>`;
+        box.appendChild(row);
+      });
+      $$('.dayName', box).forEach(inp=> inp.oninput = (e)=>{
+        const id = inp.dataset.id; const d = state.program.days.find(x=>x.id===id); if (d){ d.name = inp.value; save(); renderWorkoutTitle(); }
+      });
+      $$('[data-up]', box).forEach(b=> b.onclick = ()=>{
+        const id=b.dataset.up; const arr=allDays(); const i=arr.findIndex(x=>x.id===id); if (i>0){ [arr[i-1].order, arr[i].order] = [arr[i].order, arr[i-1].order]; renderDaysList(); save(); renderExercises(); }
+      });
+      $$('[data-down]', box).forEach(b=> b.onclick = ()=>{
+        const id=b.dataset.down; const arr=allDays(); const i=arr.findIndex(x=>x.id===id); if (i<arr.length-1){ [arr[i+1].order, arr[i].order] = [arr[i].order, arr[i+1].order]; renderDaysList(); save(); renderExercises(); }
+      });
+      $$('[data-sel]', box).forEach(b=> b.onclick = ()=>{ state.selectedDay = b.dataset.sel; state.selectedEx = null; save(); renderExercises(); $('#dlgWorkouts').close(); });
+      $$('[data-del]', box).forEach(b=> b.onclick = ()=>{ const id=b.dataset.del; const c = box.querySelector(`.confirm[data-cid="${id}"]`); if (c) c.classList.remove('hidden'); });
+    }
+
+    function renderWorkoutTitle(){
+      const day = currentDay();
+      $('#currentDayName').textContent = day ? day.name : '—';
+    }
+
+    $('#editExercisesBtn').onclick = ()=>{ renderEditList(); $('#dlgEdit').showModal(); };
+
+    $('#addEx').onclick = ()=>{
+      const d = currentDay(); if (!d) return;
+      const name = $('#newExName').value.trim() || 'New Exercise';
+      const rest = parseInt($('#newExRest').value)||90;
+      const sets = parseInt($('#newExSets').value)||3;
+      const reps = $('#newExReps').value.trim() || '8';
+      const id = uid();
+      d.exercises.push({ id, name, rest, sets, reps });
+      state.setsRemainByEx[id] = sets;
+      $('#newExName').value=''; $('#newExRest').value=90; $('#newExSets').value=3; $('#newExReps').value='8';
+      save(); renderEditList(); renderExercises();
+    };
+
+    function renderEditList(){
+      const box = $('#editList');
+      box.innerHTML = '';
+      const d = currentDay();
+      if (!d){
+        box.textContent = 'No day selected';
+        return;
+      }
+
+      d.exercises.forEach((ex)=>{
+        const row = document.createElement('div');
+        row.className = 'card editRow';
+        row.innerHTML = `
+          <div class="row editInputs">
+            <input value="${escapeHTML(ex.name)}" data-k="name" data-id="${ex.id}" class="nameInput" title="Exercise name">
+            <input type="number" value="${ex.rest}" data-k="rest" data-id="${ex.id}" placeholder="Rest (sec)" class="sm" title="Rest (seconds)">
+            <input type="number" value="${ex.sets}" data-k="sets" data-id="${ex.id}" placeholder="Sets" class="sm" title="Target sets">
+            <input value="${ex.reps}" data-k="reps" data-id="${ex.id}" placeholder="Reps (target)" class="sm" title="Target reps">
+            <div class="editActions">
+              <button class="btn secondary" data-move="-1" data-id="${ex.id}">↑</button>
+              <button class="btn secondary" data-move="1" data-id="${ex.id}">↓</button>
+              <button class="btn edit" data-del="${ex.id}">Delete</button>
+            </div>
+          </div>
+          <div class="confirm hidden mt8 center-text" data-cid="${ex.id}">
+            <div class="mb6">Are you sure?</div>
+            <div class="row center">
+              <button class="btn secondary" data-yes="${ex.id}">Yes</button>
+              <button class="btn secondary" data-no="${ex.id}">No</button>
+            </div>
+          </div>`;
+
+        box.appendChild(row);
+      });
+
+      $$('[data-k]', box).forEach(inp => {
+        inp.oninput = () => {
+          const id = inp.dataset.id;
+          const k = inp.dataset.k;
+          const dNow = currentDay();
+          const ex = dNow && dNow.exercises.find(e => e.id === id);
+          if (!ex) return;
+
+          if (k === 'name' || k === 'reps'){
+            ex[k] = inp.value;
+          } else {
+            ex[k] = parseInt(inp.value) || 0;
+            if (k === 'sets'){
+              state.setsRemainByEx[id] = ex[k];
+            }
+          }
+          save();
+          renderExercises();
+        };
+      });
+
+      $$('[data-move]', box).forEach(btn => {
+        btn.onclick = () => {
+          const id = btn.dataset.id;
+          const dir = parseInt(btn.dataset.move) || 0;
+          const dNow = currentDay();
+          if (!dNow) return;
+          const i = dNow.exercises.findIndex(e => e.id === id);
+          const j = i + dir;
+          if (i >= 0 && j >= 0 && j < dNow.exercises.length){
+            [dNow.exercises[i], dNow.exercises[j]] = [dNow.exercises[j], dNow.exercises[i]];
+            save();
+            renderEditList();
+            renderExercises();
+          }
+        };
+      });
+
+      $$('[data-del]', box).forEach(btn => {
+        btn.onclick = () => {
+          const id = btn.dataset.del;
+          const c = box.querySelector(`.confirm[data-cid="${id}"]`);
+          if (c) c.classList.remove('hidden');
+        };
+      });
+    }
+
+
+    // ---------- Shared confirm handlers for day/exercise deletion ----------
+    function handleConfirmClick(ev){
+      const btn = ev.target.closest('[data-del],[data-yes],[data-no]');
+      if (!btn) return;
+      const id = btn.dataset.del || btn.dataset.yes || btn.dataset.no;
+      if (!id) return;
+      const container = btn.closest('.card, dialog') || document;
+      const box = container.querySelector('.confirm[data-cid="'+id+'"]') || document.querySelector('.confirm[data-cid="'+id+'"]');
+      if (btn.hasAttribute('data-del')){
+        if (box) box.classList.remove('hidden');
+        return;
+      }
+      if (btn.hasAttribute('data-no')){
+        if (box) box.classList.add('hidden');
+        return;
+      }
+      if (btn.hasAttribute('data-yes')){
+        if (box) box.classList.add('hidden');
+        const dlg = btn.closest('dialog');
+        if (dlg && dlg.id === 'dlgWorkouts'){
+          const idx = state.program.days.findIndex(d=> d.id === id);
+          if (idx !== -1){
+            const wasSelected = state.selectedDay === id;
+            state.program.days.splice(idx,1);
+            if (wasSelected){
+              const first = allDays()[0];
+              state.selectedDay = first ? first.id : null;
+              state.selectedEx = null;
+            }
+            save();
+            renderDaysList();
+            renderExercises();
+          }
+        } else if (dlg && dlg.id === 'dlgEdit'){
+          const dNow = currentDay();
+          if (!dNow) return;
+          const exIdx = dNow.exercises.findIndex(ex=> ex.id === id);
+          if (exIdx !== -1){
+            const wasSelectedEx = state.selectedEx === id;
+            const exId = dNow.exercises[exIdx].id;
+            dNow.exercises.splice(exIdx,1);
+            delete state.setsRemainByEx[exId];
+            if (wasSelectedEx){
+              const firstEx = dNow.exercises[0];
+              state.selectedEx = firstEx ? firstEx.id : null;
+            }
+            save();
+            renderEditList();
+            renderExercises();
+          }
+        }
+      }
+    }
+    document.addEventListener('click', handleConfirmClick);
+
+function renderExercises(){
+      const box = $('#exerciseList'); box.innerHTML='';
+      const d = currentDay(); if (!d){ box.textContent='No workouts yet. Click button above to add a day.'; return; }
+
+      const isTales = state.theme === 'talesToBeTold';
+
+      d.exercises.forEach(ex=>{
+        if (state.setsRemainByEx[ex.id] == null) state.setsRemainByEx[ex.id] = ex.sets;
+        const li = document.createElement('div');
+        li.className = 'card exRow';
+        if (isTales) li.classList.add('talesRow');
+
+        const isSelected = ex.id === state.selectedEx;
+        if (isSelected) li.classList.add('glow');
+
+        if (isTales){
+          const heartText = isSelected ? '❤' : '';
+          const completed = state.completed[ex.id] || '';
+          const hasPR = /\+PR\b/.test(completed);
+          let determinationHTML = '';
+          if (completed){
+            if (hasPR){
+              determinationHTML = `You are filled with... <span class="determinationWord">DETERMINATION</span>`;
+            } else {
+              determinationHTML = `It fills you with determination`;
+            }
+          }
+
+          const baseRow = `
+            <span class="exHeart">${heartText}</span>
+            <span class="exStar">*</span>
+            <span class="exName exNameCol">${escapeHTML(ex.name)}</span>`;
+          const determLine = determinationHTML
+            ? `<div class="determinationLine">${determinationHTML}</div>`
+            : '';
+          li.innerHTML = baseRow + determLine;
+        } else {
+          const rowHTML = `<div class="exName">${escapeHTML(ex.name)}</div>`;
+          const em = state.completed[ex.id] ? `<div class="emojiHold">${state.completed[ex.id]}</div>` : '';
+          li.innerHTML = `${rowHTML}${em}`;
+        }
+
+        li.onclick = () => {
+          state.selectedEx = ex.id;
+          save();
+          renderExercises();
+          renderRecent();
+        };
+        box.appendChild(li);
+      });
+
+      if (!state.selectedEx && d.exercises[0]) { state.selectedEx = d.exercises[0].id; save(); }
+      renderRestPanel();
+      renderWorkoutTitle();
+      renderInlineGrowth();
+    }
+
+    // ---------- Sessions & Logging ----------
+    function currentSession(){ return state.sessions.find(s=>s.id===state.activeSessionId) || null; }
+    function startSession(){
+      if (state.activeSessionId) return;
+      const id = uid();
+      state.activeSessionId = id;
+      state.completed = {};
+      currentDay()?.exercises.forEach(ex=> state.setsRemainByEx[ex.id] = ex.sets);
+      state.sessions.push({ id, startedAt: nowISO(), finishedAt:null, entries:[] });
+      save(); updateTopbar(); updateStartFinishButton(); renderRestPanel();
+    }
+    function finishSession(){
+      const s = currentSession(); if (!s) return;
+      s.finishedAt = nowISO();
+      state.activeSessionId = null;
+      state.completed = {};
+      state.setsRemainByEx = {};
+      save();
+      updateTopbar();
+      updateStartFinishButton();
+      renderExercises();
+      renderRestPanel();
+      openSummary(s);
+    }
+    function updateStartFinishButton(){
+      const btn = $('#startFinish');
+      const isActive = !!state.activeSessionId;
+      btn.textContent = isActive ? 'Finish Workout' : 'Start Workout';
+      btn.classList.toggle('isFinish', isActive);
+    }
+
+    function calcE1RM(weight, reps){
+      if (weight<=0 || reps<=0) return 0;
+      return weight * (1 + reps/30);
+    }
+
+    function getSessionMetricsForExercise(exId, session){
+      let tonnage = 0;
+      let bestE1RM = 0;
+      if (!session || !session.entries) return { tonnage, bestE1RM };
+      for (const e of session.entries){
+        if (e.exerciseId !== exId) continue;
+        const w = Number(e.weight) || 0;
+        const r = Number(e.reps) || 0;
+        const setTonnage = w * r;
+        tonnage += setTonnage;
+        const est = calcE1RM(w, r);
+        if (est > bestE1RM) bestE1RM = est;
+      }
+      return { tonnage, bestE1RM };
+    }
+
+    function getHistoricalBestMetrics(exId, currentSessionId){
+      let bestTonnage = 0;
+      let bestE1RM = 0;
+      for (const sess of state.sessions){
+        if (!sess.entries || sess.id === currentSessionId) continue;
+        const m = getSessionMetricsForExercise(exId, sess);
+        if (m.tonnage > bestTonnage) bestTonnage = m.tonnage;
+        if (m.bestE1RM > bestE1RM) bestE1RM = m.bestE1RM;
+      }
+      return { bestTonnage, bestE1RM };
+    }
+
+    function isSessionPRForExercise(exId, session){
+      const m = getSessionMetricsForExercise(exId, session);
+      if (m.tonnage <= 0 && m.bestE1RM <= 0) return true;
+      const hist = getHistoricalBestMetrics(exId, session.id);
+      const tonnagePR = m.tonnage > hist.bestTonnage;
+      const e1rmPR = m.bestE1RM > hist.bestE1RM;
+      return tonnagePR || e1rmPR;
+    }
+
+function loadLastInputsFor(name){
+      const m = state.lastByName[name] || {}; 
+      $('#weight').value = ('weight' in m) ? m.weight : '';
+      $('#reps').value = ('reps' in m) ? m.reps : '';
+    }
+    function rememberLastInputsFor(name){
+      state.lastByName[name] = { weight: $('#weight').value, reps: $('#reps').value };
+      save();
+    }
+
+    function logSet(){
+      const ex = currentEx(); if (!ex) return;
+      // Snapshot user input before any session start/render that might overwrite fields
+      const weight = parseFloat($('#weight').value)||0;
+      const reps = parseInt($('#reps').value)||0;
+
+      if (!state.activeSessionId) startSession();
+      const s = currentSession();
+
+      s.entries.push({ id:uid(), exerciseId: ex.id, exerciseName: ex.name, weight, reps, timestamp: nowISO() });
+      $('#weight').value = String(weight||'');
+      $('#reps').value = String(reps||'');
+
+      const currentRemain = (state.setsRemainByEx[ex.id] ?? ex.sets) | 0;
+      const remain = Math.max(0, currentRemain - 1);
+      state.setsRemainByEx[ex.id] = remain;
+      $('#setsRemain').value = String(remain);
+
+      if (remain<=0 && !state.completed[ex.id]){
+        const isPR = isSessionPRForExercise(ex.id, s);
+        const ems = pickEmojis(ex.name, isPR);
+        state.completed[ex.id] = isPR ? ems.join('') + ' +PR' : ems.join('');
+        if (state.theme !== 'talesToBeTold'){
+          burst(ems);
+        }
+      }
+      rememberLastInputsFor(ex.name);
+      save();
+      renderRecent(); renderProgress(); renderInlineGrowth(); renderExercises();
+      if ($('#autoStart').checked) startRest();
+    }
+
+    // ---------- Topbar & streak & workout duration ----------
+    function updateTopbar(){
+      view.topbar.streakValue.textContent = String(computeStreak(state.sessions, state.dayStartHour));
+      const s=currentSession();
+      if (!s){ view.topbar.workDuration.textContent='00:00'; return; }
+      const tick = ()=>{
+        const end = s.finishedAt ? new Date(s.finishedAt) : new Date();
+        const ms = end - new Date(s.startedAt);
+        view.topbar.workDuration.textContent = fmtMMSS(ms/1000);
+        if (!s.finishedAt) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }
+
+    // ---------- Rest Timer (toggle) ----------
+    function fmtMMSS(totalSec){
+      totalSec = Math.max(0, Math.floor(totalSec));
+      const m = Math.floor(totalSec/60), s = totalSec%60;
+      return pad(m)+':'+pad(s);
+    }
+        let restTimer = { status:'idle', planned:90, startMono:0, remaining:0 };
+    function getNum(sel){ return parseInt($(sel).value)||0 }
+    function setNum(sel, v){ $(sel).value = String(v) }
+    function renderRestPanel(){
+      const ex = currentEx();
+      view.rest.exerciseName.textContent = ex? ex.name : 'Exercise';
+      setNum('#targetSets', ex?.sets||3);
+      view.rest.targetReps.value = ex?.reps||'8';
+      setNum('#restSec', ex?.rest||90);
+      const remain = ex ? (state.setsRemainByEx[ex.id] ?? ex.sets) : 0;
+      setNum('#setsRemain', remain);
+      $('#stickyName').textContent = ex? ex.name : 'Exercise';
+      if (ex) loadLastInputsFor(ex.name);
+    }
+    function refreshRestUI(){
+      view.rest.label.textContent = fmtMMSS(restTimer.remaining);
+      $('#stickyTime').textContent = fmtMMSS(restTimer.remaining);
+      const pct = Math.max(0, Math.min(100, (1 - restTimer.remaining / (restTimer.planned||1))*100));
+      view.rest.fill.style.width = pct+'%';
+      $('#stickyFill').style.width = pct+'%';
+      let mainLabel;
+      if (restTimer.status==='running') mainLabel = 'Pause Rest';
+      else if (restTimer.status==='paused') mainLabel = 'Resume Rest';
+      else mainLabel = 'Start Rest';
+      view.rest.toggleButton.textContent = mainLabel;
+      let stickyLabel;
+      if (restTimer.status==='running') stickyLabel = 'Pause';
+      else if (restTimer.status==='paused') stickyLabel = 'Resume';
+      else stickyLabel = 'Start';
+      $('#stickyToggle').textContent = stickyLabel;
+    }
+    function startRest(){
+      // Start a brand new rest from full duration
+      restTimer.planned = getNum('#restSec')||90;
+      const now = performance.now();
+      restTimer.status='running';
+      restTimer.startMono = now;
+      restTimer.remaining = restTimer.planned;
+      tickRest();
+      vibrate([40]);
+      refreshRestUI();
+    }
+    function pauseRest(){
+      if (restTimer.status!=='running') return;
+      const now = performance.now();
+      const elapsed = (now - restTimer.startMono)/1000;
+      restTimer.remaining = Math.max(0, restTimer.planned - elapsed);
+      restTimer.status='paused';
+      refreshRestUI();
+    }
+    function resumeRest(){
+      if (restTimer.status!=='paused') return;
+      const now = performance.now();
+      // Keep original planned duration; resume from remaining time
+      const alreadyElapsed = restTimer.planned - restTimer.remaining;
+      restTimer.startMono = now - alreadyElapsed*1000;
+      restTimer.status='running';
+      tickRest();
+      refreshRestUI();
+    }
+    function resetRest(){
+      restTimer.status='idle';
+      restTimer.remaining=0;
+      restTimer.startMono=0;
+      refreshRestUI();
+    }
+    function toggleRest(){
+      if (restTimer.status==='running') {
+        pauseRest();
+      } else if (restTimer.status==='paused') {
+        resumeRest();
+      } else {
+        startRest();
+      }
+    }
+    function tickRest(){
+      if (restTimer.status!=='running') return;
+      const now = performance.now();
+      const elapsed = (now - restTimer.startMono)/1000;
+      const left = Math.max(0, restTimer.planned - elapsed);
+      restTimer.remaining = left;
+      refreshRestUI();
+      if (left<=0){
+        restTimer.status='idle'; vibrate([60,60,60]);
+      } else {
+        requestAnimationFrame(tickRest);
+      }
+    }
+function vibrate(pattern){ try{ if ($('#vibOn').checked && navigator.vibrate) navigator.vibrate(pattern); }catch{} }
+
+    // Sticky & controls
+    $('#stickyToggle').onclick = toggleRest;
+    $('#stickyReset').onclick = resetRest;
+    $('#stickyLog').onclick = logSet;
+    $('#prevEx').onclick = ()=>{ const d=currentDay(); if(!d) return; const list=d.exercises; const idx=list.findIndex(e=>e.id===state.selectedEx); const j=(idx-1+list.length)%list.length; state.selectedEx=list[j].id; save(); renderExercises(); };
+    $('#nextEx').onclick = ()=>{ const d=currentDay(); if(!d) return; const list=d.exercises; const idx=list.findIndex(e=>e.id===state.selectedEx); const j=(idx+1)%list.length; state.selectedEx=list[j].id; save(); renderExercises(); };
+
+    // Right-card controls
+    $('#restToggle').onclick = toggleRest;
+    $('#restReset').onclick = resetRest;
+    $('#logSet').onclick = logSet;
+
+    // Start/Finish workout (single button)
+    $('#startFinish').onclick = ()=>{
+      if (!state.activeSessionId){ startSession(); vibrate([60]); }
+      else { finishSession(); vibrate([120]); }
+    };
+    updateStartFinishButton();
+
+    // ---------- Rewards modal ----------
+    function renderRewards(){
+      const box = $('#emojiChoices'); box.innerHTML='';
+      DEF_EMOJIS.forEach(e=>{
+        const sel = state.rewardEmojis.includes(e);
+        const btn = document.createElement('button');
+        btn.className = 'btn ' + (sel? '': 'secondary');
+        btn.textContent = e;
+        btn.style.minWidth='42px';
+        btn.onclick = ()=>{
+          const arr = new Set(state.rewardEmojis);
+          if (arr.has(e)) arr.delete(e); else arr.add(e);
+          state.rewardEmojis = Array.from(arr);
+          scheduleSave(); renderRewards();
+        };
+        box.appendChild(btn);
+      });
+    }
+
+    // ---------- Recent entries ----------
+    $('#selOnly').addEventListener('change', renderRecent); $('#recentLimit').addEventListener('change', renderRecent);
+    function renderRecent(){
+      const only = $('#selOnly').checked; const lim = parseInt($('#recentLimit').value)||25;
+      let arr = [];
+      state.sessions.slice().reverse().forEach(sess=>{
+        sess.entries.slice().reverse().forEach(e=> arr.push({sessId:sess.id, ...e}));
+      });
+      if (only && state.selectedEx){ arr = arr.filter(e=>e.exerciseId===state.selectedEx); }
+      arr = arr.slice(0, lim);
+      const box = $('#recentList'); box.innerHTML = arr.map(e=>`<div class="row"><div class="badge">${e.timestamp.slice(0,10)}</div><div class="space"></div><div>${e.exerciseName}</div><div class="badge">${e.weight}×${e.reps}</div></div>`).join('');
+    }
+
+    // ---------- Progress (summary text) ----------
+    function renderProgress(){
+      const ex = currentEx(); if (!ex){ $('#progressText').textContent='Select an exercise.'; return; }
+      const perSess = state.sessions.map(s=> s.entries.filter(e=>e.exerciseId===ex.id)).filter(a=>a.length);
+      if (!perSess.length){ $('#progressText').textContent='No data yet — log sets to see progress.'; return; }
+      const tops = perSess.map(arr=> arr.reduce((best,cur)=> !best||cur.weight>best.weight|| (cur.weight===best.weight&&cur.reps>best.reps) ? cur:best, null));
+      const last=tops.at(-1), prev=tops.length>1?tops.at(-2):null;
+      let trend='•'; if (prev){ trend = (last.weight>prev.weight || (last.weight===prev.weight && last.reps>prev.reps))?'▲':(last.weight<prev.weight || (last.weight===prev.weight && last.reps<prev.reps))?'▼':'→'; }
+      $('#progressText').textContent = `${escapeHTML(ex.name)}: last top set ${last.weight}×${last.reps} (${last.timestamp.slice(0,10)}) – trend ${trend}`;
+    }
+
+    function rerender(){
+      renderExercises();
+      renderRestPanel();
+      renderInlineGrowth();
+      renderRecent();
+      renderProgress();
+      renderDaysList();
+      updateTopbar();
+      renderWorkoutTitle();
+      applyScrollLeftCard();
+    }
+
+    // ---------- Growth chart helpers ----------
+    function sessionEntriesFor(exName){
+      return state.sessions.map(s=>{
+        const arr = s.entries.filter(e=> e.exerciseName===exName);
+        return arr.length ? { session:s, entries:arr } : null;
+      }).filter(Boolean);
+    }
+    function calcMetrics(entriesArr){
+      const points = [];
+      entriesArr.forEach(({session, entries})=>{
+        const ts = new Date(session.startedAt || entries[0]?.timestamp || session.id);
+        const details = entries.map(e=>({w:e.weight, r:e.reps, ts:e.timestamp}));
+        const topByWeight = entries.reduce((b,c)=> !b||c.weight>b.weight ? c : b, null);
+        const vol = entries.reduce((sum,c)=> sum + (c.weight*c.reps), 0);
+        const est1 = entries.reduce((best,c)=>{
+          const e1rm = Math.round(c.weight * (1 + c.reps/30));
+          return !best || e1rm>best ? e1rm : best;
+        }, 0);
+        points.push({
+          ts, details,
+          weight: topByWeight? topByWeight.weight : 0,
+          top: topByWeight? topByWeight.weight : 0,
+          volume: vol,
+          e1rm: est1
+        });
+      });
+      points.sort((a,b)=> a.ts - b.ts);
+      return points;
+    }
+    function valueForMetric(p, metric){
+      if (metric==='weight') return p.weight||0;
+      if (metric==='volume') return p.volume||0;
+      if (metric==='top') return p.top||0;
+      if (metric==='e1rm') return p.e1rm||0;
+      return 0;
+    }
+    function fmtDate(d){
+      const y = d.getFullYear(), m = d.getMonth()+1, da = d.getDate();
+      const yy = String(y % 100).padStart(2,'0');
+      return `${String(da).padStart(2,'0')}/${String(m).padStart(2,'0')}/${yy}`;
+    }
+
+    function fmtDateAxis(d, includeYear){
+      const dd = pad(d.getDate());
+      const mm = pad(d.getMonth()+1);
+      if (!includeYear) return `${dd}/${mm}`;
+      const yy = pad(d.getFullYear()%100);
+      return `${dd}/${mm}/${yy}`;
+    }
+
+    function fmtDateFull(d){
+      const dd = pad(d.getDate());
+      const mm = pad(d.getMonth()+1);
+      const yyyy = d.getFullYear();
+      return `${dd}/${mm}/${yyyy}`;
+    }
+
+    const DAY_MS = 24*60*60*1000;
+    function getChartRangeCode(){
+      const sel = $('#chartRange');
+      return sel ? sel.value : 'all';
+    }
+
+    function initMetricAndRangeSelects(){
+      const metricSelects = [
+        $('#metricInline'),
+        $('#metricSummary'),
+        $('#metricSel')
+      ].filter(Boolean);
+
+      const rangeSelects = [
+        $('#chartRange'),
+        $('#chartRangeSummary')
+      ].filter(Boolean);
+
+      metricSelects.forEach(sel => {
+        if (!sel) return;
+        sel.value = state.chartMetric || 'weight';
+      });
+
+      rangeSelects.forEach(sel => {
+        if (!sel) return;
+        sel.value = state.chartRange || 'all';
+      });
+    }
+    function chartRangeToMs(code){
+      switch(code){
+        case '7d': return 7*DAY_MS;
+        case '30d': return 30*DAY_MS;
+        case '3m': return 90*DAY_MS;
+        case '6m': return 182*DAY_MS;
+        case '1y': return 365*DAY_MS;
+        case '3y': return 3*365*DAY_MS;
+        default: return null;
+      }
+    }
+
+    
+    function buildChartPoints(exName, metric){
+      const metricPoints = calcMetrics(sessionEntriesFor(exName));
+      return metricPoints.map(p=>({ x: p.ts.getTime(), y: valueForMetric(p, metric), raw:p }));
+    }
+    function computeChartLayout(svg, pts){
+      const W = svg.clientWidth || 640;
+      const H = svg.clientHeight || 280;
+      const m = {l:40, r:12, t:12, b:36};
+      const iw = Math.max(1, W - m.l - m.r);
+      const ih = Math.max(1, H - m.t - m.b);
+      const minX = Math.min(...pts.map(p=>p.x));
+      const maxX = Math.max(...pts.map(p=>p.x));
+      const minY = Math.min(...pts.map(p=>p.y));
+      const maxY = Math.max(...pts.map(p=>p.y));
+      const yPad = (maxY - minY) * 0.1 + 1;
+      const X = x=> m.l + (iw * ( (x - minX) / Math.max(1, maxX - minX) ));
+      const Y = y=> m.t + ih - (ih * ((y - (minY - yPad)) / Math.max(1, (maxY - minY) + 2*yPad)));
+      svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+      return { W, H, m, iw, ih, minX, maxX, minY, maxY, yPad, X, Y };
+    }
+    function drawChartAxesAndPath(svg, pts, layout, g){
+      const { W, H, m, iw, ih, minX, maxX, minY, maxY, X, Y } = layout;
+      // Axes
+      svg.appendChild(g('line',{x1:m.l,y1:m.t+ih,x2:m.l+iw,y2:m.t+ih,stroke:'#444'}));
+      svg.appendChild(g('line',{x1:m.l,y1:m.t,x2:m.l,y2:m.t+ih,stroke:'#444'}));
+      // X ticks + labels
+      const spanMs = maxX - minX;
+      const showYear = spanMs > 365*DAY_MS;
+      for(let i=0;i<4;i++){
+        const tx = minX + (i/3)*(maxX-minX);
+        const x = X(tx);
+        svg.appendChild(g('line',{x1:x,y1:m.t+ih,x2:x,y2:m.t+ih+4,stroke:'#555'}));
+        const t = g('text',{x, y:m.t+ih+18, 'text-anchor':'middle', fill:'#aaa'});
+        t.textContent = fmtDateAxis(new Date(tx), showYear);
+        svg.appendChild(t);
+      }
+      // Y ticks + labels
+      for(let i=0;i<4;i++){
+        const ty = minY + (i/3)*(maxY-minY);
+        const y = Y(ty);
+        svg.appendChild(g('line',{x1:m.l-4,y1:y,x2:m.l,y2:y,stroke:'#555'}));
+        const t = g('text',{x:m.l-8, y:y+4, 'text-anchor':'end', fill:'#aaa'});
+        t.textContent = Math.round(ty);
+        svg.appendChild(t);
+      }
+      // Path
+      let d = '';
+      pts.forEach((p,i)=>{ const x=X(p.x), y=Y(p.y); d += (i?'L':'M')+x+' '+y+' '; });
+      svg.appendChild(g('path',{d, fill:'none', stroke:'var(--accent)', 'stroke-width':'2'}));
+      // Points
+      pts.forEach((p,i)=>{
+        const x=X(p.x), y=Y(p.y);
+        const hit = g('circle',{cx:x, cy:y, r:14, fill:'transparent', stroke:'none', 'stroke-width':'0', 'data-idx': String(i), 'pointer-events':'all'});
+        const c = g('circle',{cx:x, cy:y, r:4, fill:'var(--accent)', 'data-idx': String(i), cursor:'pointer'});
+        svg.appendChild(hit);
+        svg.appendChild(c);
+      });
+    }
+    
+    function isPointPRForExercise(points, point){
+      if (!points || !points.length || !point || !point.raw) return false;
+      const volumes = points.map(pt => pt.raw.volume || 0);
+      const weights = points.map(pt => pt.raw.weight || 0);
+      const e1rms  = points.map(pt => pt.raw.e1rm  || 0);
+      const maxVol = Math.max(...volumes, 0);
+      const maxW   = Math.max(...weights, 0);
+      const maxE   = Math.max(...e1rms, 0);
+      const v = point.raw.volume || 0;
+      const w = point.raw.weight || 0;
+      const e = point.raw.e1rm  || 0;
+      return (v > 0 && v === maxVol) ||
+             (w > 0 && w === maxW)   ||
+             (e > 0 && e === maxE);
+    }
+function attachChartPointHandler(svg, pts, exName, metric){
+      svg.onpointerdown = (ev)=>{
+        const target = ev.target;
+        if (!target || !target.getAttribute) return;
+        const idxAttr = target.getAttribute('data-idx');
+        if (idxAttr == null) return;
+        const idx = parseInt(idxAttr, 10);
+        if (!Number.isFinite(idx) || !pts[idx]) return;
+        const p = pts[idx];
+        const date = fmtDate(new Date(p.raw.ts));
+        const setsInfo = p.raw.details.map(d=> `${d.w}×${d.r}`).join(', ') || '—';
+        const metricLabel = metric.toUpperCase();
+        const metricVal = Math.round(p.y);
+        const topWeight = p.raw.weight || 0;
+        let topReps = 0;
+        p.raw.details.forEach(d=>{
+          if (d.w===topWeight && d.r>topReps) topReps = d.r;
+        });
+        if (!topReps && p.raw.details[0]) topReps = p.raw.details[0].r || 0;
+        const tonnage = p.raw.volume || 0;
+        const isPR = isPointPRForExercise(pts, p);
+
+        const dlg = view.dialogs.pointDetails;
+        document.getElementById('ptTitle').textContent = exName || 'Point details';
+        const body = document.getElementById('ptBody');
+        body.innerHTML = `
+          <div class="card">
+            <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:6px">
+              <div>${date}</div>
+              <div style="font-size:12px;opacity:.8">
+                ${metricLabel}: <span class="num">${metricVal}</span>
+                ${isPR ? '<span style="margin-left:6px;padding:2px 4px;border-radius:999px;background:var(--accent);color:#000;font-size:11px">PR</span>' : ''}
+              </div>
+            </div>
+            <div style="margin-bottom:6px"><b>Sets</b>: ${setsInfo}</div>
+            <div class="row" style="justify-content:space-between">
+              <div><div style="font-size:11px;opacity:.8">Weight</div><div class="num">${topWeight}</div></div>
+              <div><div style="font-size:11px;opacity:.8">Reps</div><div class="num">${topReps}</div></div>
+              <div><div style="font-size:11px;opacity:.8">e1RM</div><div class="num">${p.raw.e1rm || 0}</div></div>
+              <div><div style="font-size:11px;opacity:.8">Tonnage</div><div class="num">${tonnage}</div></div>
+            </div>
+          </div>
+        `;
+        dlg.showModal();
+      };
+    }
+    function renderChartInto(svg, exName, metric){
+      svg.innerHTML = '';
+      const g = (name, attrs={})=>{
+        const el = document.createElementNS('http://www.w3.org/2000/svg', name);
+        for (const k in attrs) el.setAttribute(k, attrs[k]);
+        return el;
+      };
+      if (!exName){
+        svg.innerHTML = `<text x="50%" y="50%" text-anchor="middle" fill="#aaa">Select an exercise</text>`;
+        return;
+      }
+      const rangeCode = getChartRangeCode();
+      const maxAgeMs = chartRangeToMs(rangeCode);
+      const allPts = buildChartPoints(exName, metric);
+      let pts = allPts;
+      if (maxAgeMs){
+        const now = Date.now();
+        pts = allPts.filter(p => now - p.x <= maxAgeMs);
+      }
+      if (!pts.length){
+        const t = g('text',{x:(svg.clientWidth||640)/2,y:(svg.clientHeight||280)/2,'text-anchor':'middle',fill:'#aaa'});
+        t.textContent = maxAgeMs ? 'No data in this period' : 'No data — log sets to see growth';
+        svg.appendChild(t);
+        return;
+      }
+      const layout = computeChartLayout(svg, pts);
+      drawChartAxesAndPath(svg, pts, layout, g);
+      const title = g('text',{x: layout.m.l, y:layout.m.t+12, fill:'#ddd'});
+      title.textContent = `${escapeHTML(exName)} — ${metric.toUpperCase()}`;
+      svg.appendChild(title);
+      attachChartPointHandler(svg, pts, exName, metric);
+    }
+
+    function renderInlineGrowth(){
+      const ex = currentEx();
+      const metric = $('#metricInline').value;
+      renderChartInto($('#growthSvgInline'), ex?.name, metric);
+    }
+
+    const chartRangeSel = $('#chartRange');
+    if (chartRangeSel){
+      chartRangeSel.addEventListener('change', ()=>{
+        state.chartRange = chartRangeSel.value;
+        scheduleSave();
+        renderInlineGrowth();
+        if ($('#dlgGrowth') && $('#dlgGrowth').open){
+          openGrowth();
+        }
+      });
+    }
+
+    // Growth modal list/chart wiring
+    function allExerciseNames(){
+      const set = new Set();
+      state.program.days.forEach(d=> d.exercises.forEach(e=> set.add(e.name)));
+      state.sessions.forEach(s=> s.entries.forEach(e=> set.add(e.exerciseName)));
+      return Array.from(set);
+    }
+    function growthScore(points, metric){
+      if (points.length<2) return -Infinity;
+      const first = valueForMetric(points[0], metric);
+      const last = valueForMetric(points[points.length-1], metric);
+      return last - first;
+    }
+    function renderExerciseList(){
+      const list = $('#growthList');
+      const q = $('#growthSearch').value.trim().toLowerCase();
+      const metric = $('#metricSel').value;
+      const names = allExerciseNames();
+      const rows = names.map(name=>{
+        const pts = calcMetrics(sessionEntriesFor(name));
+        const lastDate = pts.length ? pts[pts.length-1].ts : null;
+        return { name, pts, lastDate, score: growthScore(pts, metric) };
+      }).filter(x=> !q || x.name.toLowerCase().includes(q));
+      const mode = $('#growthSort').value;
+      rows.sort((a,b)=>{
+        if (mode==='alpha') return a.name.localeCompare(b.name);
+        if (mode==='recency'){
+          const at = a.lastDate ? a.lastDate.getTime() : 0;
+          const bt = b.lastDate ? b.lastDate.getTime() : 0;
+          return bt - at;
+        }
+        if (mode==='growth'){
+          return (b.score||-Infinity) - (a.score||-Infinity);
+        }
+        return 0;
+      });
+      list.innerHTML = rows.map(r=>`<button class="item" data-name="${r.name}" style="display:block;width:100%;text-align:left;padding:8px 10px;background:transparent;border:0;color:var(--fg);border-bottom:1px solid var(--border);cursor:pointer">${r.name}${r.lastDate?` <span class="badge" style="float:right">${r.lastDate.toISOString().slice(0,10)}</span>`:''}</button>`).join('');
+      $$('#growthList .item').forEach(b=> b.onclick = ()=>{
+        $('#growthSvg').dataset.sel = b.dataset.name;
+        renderChartInto($('#growthSvg'), b.dataset.name, $('#metricSel').value);
+      });
+      // Select current exercise by default
+      const sel = $('#growthSvg').dataset.sel || currentEx()?.name || rows[0]?.name;
+      if (sel){ $('#growthSvg').dataset.sel = sel; renderChartInto($('#growthSvg'), sel, $('#metricSel').value); }
+    }
+    function openGrowth(){
+      $('#growthSearch').value=''; $('#growthSort').value='recency'; $('#metricSel').value='weight'; $('#growthSvg').dataset.sel='';
+      renderExerciseList();
+      $('#dlgGrowth').showModal();
+    }
+
+    // ---------- Summary (Finish Workout) ----------
+    
+function buildSummaryHTML(sess){
+      const start = new Date(sess.startedAt);
+      const end = new Date(sess.finishedAt || Date.now());
+
+      // Date + time + duration
+      const dateLabel = fmtDateFull(start);
+      const hhmm = d => `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+      const startStr = hhmm(start);
+      const endStr = hhmm(end);
+      const durMs = Math.max(0, end - start);
+      const totalMinutes = Math.round(durMs / 60000);
+      const durH = Math.floor(totalMinutes / 60);
+      const durM = totalMinutes % 60;
+      const durStr = (durH ? `${durH}h ` : '') + `${durM}m`;
+
+      // Aggregate by exercise
+      const byExercise = new Map();
+      (sess.entries || []).forEach(e=>{
+        if (!byExercise.has(e.exerciseName)) byExercise.set(e.exerciseName, []);
+        byExercise.get(e.exerciseName).push(e);
+      });
+
+      // Total tonnage and heaviest lift overall
+      let totalTonnage = 0;
+      let heaviest = null;
+      (sess.entries || []).forEach(e=>{
+        const w = Number(e.weight) || 0;
+        const r = Number(e.reps) || 0;
+        const ton = w * r;
+        totalTonnage += ton;
+        if (!heaviest || w > heaviest.weight){
+          heaviest = { weight:w, reps:r, name:e.exerciseName || '' };
+        }
+      });
+
+      let html = '';
+      // Top summary card
+      html += '<div class="sumCard">';
+      html +=   '<div class="sumRow"><div><b>Date</b></div><div>' + dateLabel + '</div></div>';
+      html +=   '<div class="sumRow"><div><b>Time and duration</b></div><div>' +
+                  startStr + ' - ' + endStr + ' (' + durStr + ')</div></div>';
+      html +=   '<div class="sumRow"><div><b>Total tonnage</b></div><div class="num">' + totalTonnage + '</div></div>';
+      html +=   '<div class="sumRow"><div><b>Heaviest lift</b></div><div class="num">' +
+                  (heaviest ? (heaviest.weight + '×' + heaviest.reps + ' ' + heaviest.name) : '—') +
+                '</div></div>';
+      html += '</div>';
+
+      // Metric + Time Period controls for summary charts
+      html += '<div class="sumCard">';
+      html +=   '<div class="row" style="align-items:center;margin:6px 0 10px">';
+      html +=     '<label>Metric:</label>';
+      html +=     '<select id="metricSummary">';
+      html +=       '<option value="weight">Weight (top)</option>';
+      html +=       '<option value="volume">Volume (sum)</option>';
+      html +=       '<option value="top">Top Set (heaviest)</option>';
+      html +=       '<option value="e1rm">Estimated 1RM</option>';
+      html +=     '</select>';
+      html +=     '<label style="margin-left:8px">Time Period:</label>';
+      html +=     '<select id="chartRangeSummary">';
+      html +=       '<option value="7d">7 days</option>';
+      html +=       '<option value="30d">30 days</option>';
+      html +=       '<option value="3m">3 months</option>';
+      html +=       '<option value="6m">6 months</option>';
+      html +=       '<option value="1y">1 year</option>';
+      html +=       '<option value="3y">3 years</option>';
+      html +=       '<option value="all" selected>All</option>';
+      html +=     '</select>';
+      html +=   '</div>';
+      html += '</div>';
+
+      // Exercises card
+      html += '<div class="sumCard"><h3>Exercises</h3>';
+      if (!byExercise.size){
+        html += '<div>None logged.</div>';
+      } else {
+        byExercise.forEach((arr, name)=>{
+          const rows = arr.map(e=> `${e.weight}×${e.reps}`).join(', ');
+          let target = '';
+          const firstId = arr[0]?.exerciseId;
+          if (firstId){
+            outer: for (const d of state.program.days){
+              for (const ex of d.exercises){
+                if (ex.id === firstId){ target = ex.reps || ''; break outer; }
+              }
+            }
+          }
+          html += '<details open>';
+          html +=   '<summary style="cursor:pointer"><b>' + name + '</b>' +
+                      (target ? ' <span class="muted">(Target: ' + target + ')</span>' : '') +
+                    '</summary>';
+          html +=   '<div style="margin:6px 0 4px">Sets: ' + rows + '</div>';
+          html +=   '<div style="margin:4px 0"><svg class="sumSvg" data-ex="' + name +
+                      '" style="width:100%;height:140px;border:1px solid var(--border);border-radius:12px"></svg></div>';
+          html += '</details>';
+        });
+      }
+      html += '</div>';
+      return html;
+    }
+
+
+    function openSummary(sess){
+      const body = $('#summaryBody');
+      body.innerHTML = buildSummaryHTML(sess);
+      $('#dlgSummary').showModal();
+      const metricSel = $('#metricSummary');
+      const rangeSel = $('#chartRangeSummary');
+
+      if (metricSel){
+        metricSel.value = state.chartMetric || 'weight';
+      }
+      if (rangeSel){
+        rangeSel.value = state.chartRange || 'all';
+      }
+
+      const rerender = ()=>{
+        const metric = metricSel ? metricSel.value : (state.chartMetric || 'weight');
+        $$('.sumSvg', body).forEach(svg=>{
+          const name = svg.dataset.ex;
+          renderChartInto(svg, name, metric);
+        });
+      };
+
+      if (metricSel){
+        metricSel.onchange = ()=>{
+          state.chartMetric = metricSel.value;
+          scheduleSave();
+          const mainMetric = $('#metricInline');
+          if (mainMetric) mainMetric.value = state.chartMetric;
+          renderInlineGrowth();
+          if ($('#dlgGrowth') && $('#dlgGrowth').open){
+            openGrowth();
+          }
+          rerender();
+        };
+      }
+      if (rangeSel){
+        metricSel && rangeSel.addEventListener('change', ()=>{
+          state.chartRange = rangeSel.value;
+          scheduleSave();
+          const mainRange = $('#chartRange');
+          if (mainRange) mainRange.value = state.chartRange;
+          renderInlineGrowth();
+          if ($('#dlgGrowth') && $('#dlgGrowth').open){
+            openGrowth();
+          }
+          rerender();
+        });
+      }
+      // initial render
+      rerender();
+    }
+
+
+    // Share / Download handlers
+    $('#shareSummary').onclick = async ()=>{
+      const body = $('#summaryBody').innerText;
+      if (navigator.share){
+        try{ await navigator.share({ title:'TechMuscleGod Workout Summary', text: body }); }
+        catch(e){ alert('Share canceled'); }
+      } else {
+        alert('Web Share not supported. Use Download instead.');
+      }
+    };
+    $('#downloadSummary').onclick = ()=>{
+      const html = `<!doctype html><meta charset="utf-8"><title>TMG Summary</title><style>body{font-family:system-ui;background:#0b0b0b;color:#eee;margin:0;padding:24px} .card{background:#111;border:1px solid #222;border-radius:12px;padding:16px;margin:12px 0;box-shadow:0 6px 18px rgba(0,0,0,.3)} table{width:100%;border-collapse:collapse} th,td{border-bottom:1px solid #222;padding:8px;text-align:left}</style><h1>TechMuscleGod — Workout Summary</h1>` + $('#summaryBody').innerHTML;
+      const blob = new Blob([html], {type:'text/html'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href=url; a.download='tmg-summary.html'; a.click(); URL.revokeObjectURL(url);
+    };
+
+    // ---------- Export / Import ----------
+    $('#exportJSON').onclick = ()=>{
+      const blob = new Blob([JSON.stringify(state,null,2)], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href=url; a.download='tmg-export.json'; a.click(); URL.revokeObjectURL(url);
+    };
+    $('#importJSON').onchange = async (e)=>{
+      const f = e.target.files?.[0]; if(!f) return;
+      const text = await f.text();
+      try{ const next = JSON.parse(text); if (next && next.program && next.sessions) { state = next; save(); location.reload(); } else alert('Invalid file'); }
+      catch(err){ alert('Invalid JSON'); }
+    };
+    $('#downloadHTML').onclick = ()=>{
+      const s = state.sessions.slice().reverse().find(x=>x.finishedAt) || state.sessions.slice().reverse()[0];
+      if (!s) return alert('No session to export');
+      const rows = s.entries.map(e=>`<tr><td>${e.timestamp}</td><td>${e.exerciseName}</td><td>${e.weight}</td><td>${e.reps}</td><td>${e.weight*e.reps}</td></tr>`).join('');
+      const html = `<!doctype html><meta charset="utf-8"><title>TMG Summary</title><style>body{font-family:system-ui;background:#0b0b0b;color:#eee;margin:0;padding:24px} .card{background:#111;border:1px solid #222;border-radius:12px;padding:16px;margin:12px 0;box-shadow:0 6px 18px rgba(0,0,0,.3)} table{width:100%;border-collapse:collapse} th,td{border-bottom:1px solid #222;padding:8px;text-align:left}</style><h1>TechMuscleGod — Workout Summary</h1><div class="card"><div><b>Started:</b> ${s.startedAt}</div><div><b>Finished:</b> ${s.finishedAt||'—'}</div></div><div class="card"><table><thead><tr><th>Time</th><th>Exercise</th><th>Weight</th><th>Reps</th><th>Volume</th></tr></thead><tbody>${rows||'<tr><td colspan="5">No sets</td></tr>'}</tbody></table></div>`;
+      const blob = new Blob([html], {type:'text/html'});
+      const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='tmg-summary.html'; a.click(); URL.revokeObjectURL(url);
+    };
+
+    // ---------- Event bindings ----------
+    $('#metricInline').onchange = ()=>{
+      state.chartMetric = $('#metricInline').value;
+      scheduleSave();
+      renderInlineGrowth();
+      if ($('#dlgGrowth') && $('#dlgGrowth').open){
+        openGrowth();
+      }
+    };
+    $('#openGrowthModal').onclick = openGrowth;
+    $('#growthSearch').oninput = ()=> renderExerciseList();
+    $('#growthSort').onchange = ()=> renderExerciseList();
+    $('#metricSel').onchange = ()=>{
+      const sel = $('#growthSvg').dataset.sel; if (sel) renderChartInto($('#growthSvg'), sel, $('#metricSel').value);
+      renderExerciseList();
+    };
+
+    
+    // ---------- Confirm handlers ----------
+    function attachDayConfirmHandlers(){
+      const box = $('#daysList');
+      if (!box) return;
+      box.addEventListener('click', (ev)=>{
+        const btn = ev.target.closest('button');
+        if (!btn) return;
+        const yesId = btn.dataset.yes;
+        const noId = btn.dataset.no;
+        if (!yesId && !noId) return;
+        const id = yesId || noId;
+        const confirmEl = box.querySelector(`.confirm[data-cid="${id}"]`);
+        if (yesId){
+          const arr = allDays();
+          const idx = arr.findIndex(d=>d.id===id);
+          if (idx !== -1){
+            arr.splice(idx,1);
+          }
+          if (state.selectedDay === id){
+            const nextDays = allDays();
+            state.selectedDay = nextDays[0]?.id || null;
+            state.selectedEx = null;
+          }
+          save();
+          renderDaysList();
+          renderExercises();
+        }
+        if (confirmEl) confirmEl.classList.add('hidden');
+      });
+    }
+
+    function attachEditConfirmHandlers(){
+      const box = $('#editList');
+      if (!box) return;
+      box.addEventListener('click', (ev)=>{
+        const btn = ev.target.closest('button');
+        if (!btn) return;
+        const yesId = btn.dataset.yes;
+        const noId = btn.dataset.no;
+        if (!yesId && !noId) return;
+        const id = yesId || noId;
+        const confirmEl = box.querySelector(`.confirm[data-cid="${id}"]`);
+        if (yesId){
+          const d = currentDay();
+          if (d){
+            const idx = d.exercises.findIndex(ex=>ex.id===id);
+            if (idx !== -1){
+              d.exercises.splice(idx,1);
+            }
+            if (state.selectedEx === id){
+              state.selectedEx = d.exercises[0]?.id || null;
+            }
+            delete state.setsRemainByEx[id];
+            delete state.completed[id];
+            save();
+            renderEditList();
+            renderExercises();
+            renderRestPanel();
+          }
+        }
+        if (confirmEl) confirmEl.classList.add('hidden');
+      });
+    }
+
+
+    // ---------- Pseudo-modules ----------
+    const Program = {
+      renderDaysList,
+      renderExercises,
+      selectDay(id){
+        state.selectedDay = id;
+        state.selectedEx = null;
+        save();
+        rerender();
+      }
+    };
+
+    const Session = {
+      start: startSession,
+      finish: finishSession,
+      logSet,
+      current: currentSession
+    };
+
+    const Rest = {
+      start: startRest,
+      reset: resetRest,
+      pause: pauseRest,
+      resume: resumeRest,
+      refreshUI: refreshRestUI
+    };
+
+    const Charts = {
+      renderInline: renderInlineGrowth,
+      renderInto: renderChartInto,
+      openGrowth
+    };
+
+    const Summary = {
+      open: openSummary,
+      buildHTML: buildSummaryHTML
+    };
+
+    const Appearance = {
+      applyTheme,
+      applyFonts,
+      syncControls: syncAppearanceControls
+    };
+
+// ---------- Init ----------
+    attachDayConfirmHandlers();
+    attachEditConfirmHandlers();
+
+    initMetricAndRangeSelects();
+
+    rerender();
+  })();
+  </script>
+
+<!-- TMG minimal error overlay (diagnostic only) -->
+<script>
+(function(){
+  if (document.getElementById('tmg_err')) return;
+  window.addEventListener('error', function(e){
+    try{
+      var s=(e&&e.error&&e.error.stack)||e.message||String(e);
+      var box=document.getElementById('tmg_err');
+      if(!box){
+        box=document.createElement('div');
+        box.id='tmg_err';
+        box.style.cssText='position:fixed;left:8px;right:8px;bottom:8px;z-index:99999;background:#111;color:#f66;border:1px solid #f00;border-radius:10px;padding:8px 10px;font:12px/1.3 monospace;max-height:40vh;overflow:auto;';
+        document.body.appendChild(box);
+      }
+      box.textContent='JS Error: '+s;
+    }catch(_){}
+  });
+})();
+</script>
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function(){
+      navigator.serviceWorker.register('./service-worker.js').catch(function(err){
+        console.error('[TMG][SW] registration failed', err);
+      });
+    });
+  }
+</script>
+</body>
+</html>
